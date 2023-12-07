@@ -8,7 +8,7 @@ import pkg from "./package.json"
 import metaVersions from "./meta-versions.json"
 
 const repoRootUrl = pkg.repository.url.slice(4, -4)
-const scriptSources = glob.sync(path.resolve("src/!(utils)"))
+const scriptSources = glob.sync(path.resolve("src/!(utils)/*.js"))
 
 function getScriptUrl(name) {
   return `${repoRootUrl}/raw/main/dist/${name}.user.js`
@@ -28,12 +28,19 @@ function getBetaScriptUrl(name) {
 
 export default scriptSources.reduce((configs, sourcePath) => {
   const pathParts = sourcePath.split("/")
-  const name = pathParts[pathParts.length - 1]
-  const standardFile = path.resolve(process.cwd(), `dist/${name}.user.js`)
-  const betaFile = path.resolve(process.cwd(), `dist/${name}-dev.user.js`)
-  const input = glob.sync(`${sourcePath}/*.js`)
+  const dir = pathParts[pathParts.length - 2]
+  const dirPath = pathParts.slice(0, -1).join("/")
+  const name = pathParts[pathParts.length - 1].replace(".js", "")
+  const standardFile = path.resolve(
+    process.cwd(),
+    `dist/${dir}-${name}.user.js`
+  )
+  const betaFile = path.resolve(
+    process.cwd(),
+    `dist/${dir}-${name}-dev.user.js`
+  )
 
-  const metaPath = `${sourcePath}/${name}.meta.json`
+  const metaPath = `${dirPath}/${name}.meta.json`
   const metaOverride = fs.existsSync(metaPath)
     ? JSON.parse(fs.readFileSync(metaPath, "utf8"))
     : undefined
@@ -41,11 +48,17 @@ export default scriptSources.reduce((configs, sourcePath) => {
   const scriptUrl = getScriptUrl(name)
   const betaScriptUrl = getBetaScriptUrl(name)
 
+  console.log("📁 Directory:", dirPath)
+  console.log("📦 Building:", name)
+  console.log("📄 Standard file:", standardFile)
+  console.log("🔗 Script URL:", scriptUrl)
+  console.log("🔗 Beta Script URL:", betaScriptUrl)
+
   return [
-    ...configs,d
+    ...configs,
     /* Standard build */
     {
-      input,
+      input: sourcePath,
       output: [
         {
           file: standardFile,
@@ -80,7 +93,7 @@ export default scriptSources.reduce((configs, sourcePath) => {
     },
     /* Beta build */
     {
-      input,
+      input: sourcePath,
       output: [
         {
           file: betaFile,

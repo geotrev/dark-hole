@@ -1,0 +1,5 @@
+{
+  "name": "Dark Hole - Reddit Saved",
+  "description": "Automated content deletion",
+  "match": "https://old.reddit.com/user/*/saved"
+}

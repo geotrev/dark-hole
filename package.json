@@ -1,0 +1,54 @@
+{
+  "name": "dark-hole",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "build": "rollup -c",
+    "pre-commit:build": "npm run build && git add dist",
+    "eslint:check": "eslint --ext .js -c .eslintrc.json",
+    "prettier:check": "prettier --config .prettierrc.json --check",
+    "prettier:write": "prettier --write",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/geotrev/dark-hole.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/geotrev/dark-hole/issues"
+  },
+  "homepage": "https://github.com/geotrev/dark-hole#readme",
+  "dependencies": {
+    "@babel/core": "^7.23.3",
+    "@rollup/plugin-terser": "^0.4.4",
+    "rollup": "^2.79.1",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-userscript-metablock": "^0.3.3"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.23.3",
+    "@babel/preset-env": "^7.23.3",
+    "eslint": "^8.53.0",
+    "eslint-config-prettier": "^8.10.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.5.0",
+    "prettier": "^2.8.8"
+  },
+  "lint-staged": {
+    "src/**/*.{js,scss,css}": [
+      "npm run prettier:check"
+    ],
+    "src/**/*.js": [
+      "npm run eslint:check"
+    ],
+    "*.json": [
+      "npm run prettier:write"
+    ]
+  }
+}

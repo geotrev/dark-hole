@@ -1,0 +1,6 @@
+{
+  "author": "George Treviranus",
+  "namespace": "https://github.com/geotrev/dark-hole",
+  "run-at": "document-idle",
+  "grant": "none"
+}

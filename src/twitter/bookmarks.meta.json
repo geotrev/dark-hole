@@ -1,0 +1,5 @@
+{
+  "name": "Dark Hole - Twitter Bookmarks",
+  "description": "Automated content deletion",
+  "match": "https://www.twitter.com/i/bookmarks"
+}

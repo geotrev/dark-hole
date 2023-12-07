@@ -1,0 +1,5 @@
+{
+  "name": "Dark Hole - Reddit Votes",
+  "description": "Automated content deletion",
+  "match": "https://old.reddit.com/user/*/(upvoted|downvoted)"
+}

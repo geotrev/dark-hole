@@ -1,0 +1,5 @@
+{
+  "name": "Dark Hole - Reddit Submissions",
+  "description": "Automated content deletion",
+  "match": "https://old.reddit.com/user/*/(comments|submitted)"
+}

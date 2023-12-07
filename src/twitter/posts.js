@@ -104,6 +104,8 @@ function init() {
   const pathname = window?.location?.pathname
   const handle = getTwitterHandle()
 
+  console.log("Initializing Twitter Posts script...")
+
   // Only run this script on posts, replies, or media profile page tabs
 
   if (

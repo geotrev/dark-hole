@@ -5,7 +5,7 @@
 // @author      George Treviranus
 // @run-at      document-idle
 // @match       https://twitter.com/*
-// @version     1.0.0-beta.4
+// @version     1.0.0-beta.5
 // @downloadURL https://github.com/geotrev/dark-hole/raw/develop/dist/posts-dev.user.js
 // @updateURL   https://github.com/geotrev/dark-hole/raw/develop/dist/posts-dev.user.js
 // @grant       none
@@ -190,6 +190,8 @@
   function init() {
     const pathname = window?.location?.pathname;
     const handle = getTwitterHandle();
+
+    console.log("Initializing Twitter Posts script...");
 
     // Only run this script on posts, replies, or media profile page tabs
 

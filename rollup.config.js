@@ -48,12 +48,6 @@ export default scriptSources.reduce((configs, sourcePath) => {
   const scriptUrl = getScriptUrl(name)
   const betaScriptUrl = getBetaScriptUrl(name)
 
-  console.log("📁 Directory:", dirPath)
-  console.log("📦 Building:", name)
-  console.log("📄 Standard file:", standardFile)
-  console.log("🔗 Script URL:", scriptUrl)
-  console.log("🔗 Beta Script URL:", betaScriptUrl)
-
   return [
     ...configs,
     /* Standard build */

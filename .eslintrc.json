@@ -8,7 +8,6 @@
   "parser": "@babel/eslint-parser",
   "extends": ["eslint:recommended", "plugin:prettier/recommended"],
   "rules": {
-    "no-console": 2,
     "no-unused-vars": ["error"]
   }
 }

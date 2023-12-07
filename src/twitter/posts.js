@@ -1,4 +1,6 @@
-import { getTwitterHandle } from "../utils/getTwitterHandle.js"
+import { getTwitterHandle } from "../utils/get-twitter-handle.js"
+import { notify } from "../utils/notify.js"
+import { stopScript } from "../utils/stop-script.js"
 
 let SHOULD_STOP = false
 
@@ -6,7 +8,7 @@ async function exec(_cells = []) {
   /**
    * Specify your Twitter handle:
    */
-  let TWITTER_HANDLE = "TWITTER_HANDLE"
+  let TWITTER_HANDLE = getTwitterHandle()
 
   /**
    * Timing can sometimes be sensitive on lower end PCs/Macs. If that's the case, increase this number in increments of 100 until the script is stable.
@@ -24,19 +26,6 @@ async function exec(_cells = []) {
   /**
    * BEGIN SCRTIPT
    */
-
-  const pathname = window?.location?.pathname
-  const isProfilePageWithPosts =
-    pathname.startsWith(`/${TWITTER_HANDLE}`) ||
-    pathname.startsWith(`/${TWITTER_HANDLE}/with_replies`) ||
-    pathname.startsWith(`/${TWITTER_HANDLE}/media`)
-
-  /**
-   * Only procede in this script if we're on a profile page
-   */
-  if (!isProfilePageWithPosts) {
-    return
-  }
 
   function queryCells() {
     return [...document.querySelectorAll('[data-testid="tweet"]')]

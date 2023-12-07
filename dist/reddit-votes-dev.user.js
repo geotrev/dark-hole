@@ -1,11 +1,11 @@
 // ==UserScript==
-// @name        Dark Hole - Reddit Votes
+// @name        Dark Hole - Reddit Votes (Beta)
 // @description Automated content deletion
 // @namespace   https://github.com/geotrev/dark-hole
 // @author      George Treviranus
 // @run-at      document-idle
 // @match       https://old.reddit.com/user/*/(upvoted|downvoted)
-// @version     1.0.0-beta.1
+// @version     1.0.0-beta.2
 // @downloadURL https://github.com/geotrev/dark-hole/raw/develop/dist/votes-dev.user.js
 // @updateURL   https://github.com/geotrev/dark-hole/raw/develop/dist/votes-dev.user.js
 // @grant       none

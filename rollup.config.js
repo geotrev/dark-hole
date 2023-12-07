@@ -98,6 +98,7 @@ export default scriptSources.reduce((configs, sourcePath) => {
               file: path.resolve(process.cwd(), "./meta-common.json"),
               override: {
                 ...metaOverride,
+                name: `${metaOverride.name} (Beta)`,
                 version: metaVersions.develop,
                 downloadURL: betaScriptUrl,
                 updateURL: betaScriptUrl,

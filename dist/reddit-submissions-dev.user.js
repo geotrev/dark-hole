@@ -1,11 +1,11 @@
 // ==UserScript==
-// @name        Dark Hole - Reddit Submissions
+// @name        Dark Hole - Reddit Submissions (Beta)
 // @description Automated content deletion
 // @namespace   https://github.com/geotrev/dark-hole
 // @author      George Treviranus
 // @run-at      document-idle
 // @match       https://old.reddit.com/user/*/(comments|submitted)
-// @version     1.0.0-beta.1
+// @version     1.0.0-beta.2
 // @downloadURL https://github.com/geotrev/dark-hole/raw/develop/dist/submissions-dev.user.js
 // @updateURL   https://github.com/geotrev/dark-hole/raw/develop/dist/submissions-dev.user.js
 // @grant       none

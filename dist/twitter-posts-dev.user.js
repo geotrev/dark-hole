@@ -5,7 +5,7 @@
 // @author      George Treviranus
 // @run-at      document-idle
 // @match       https://twitter.com/*
-// @version     1.0.0-beta.11
+// @version     1.0.0-beta.12
 // @downloadURL https://github.com/geotrev/dark-hole/raw/develop/dist/posts-dev.user.js
 // @updateURL   https://github.com/geotrev/dark-hole/raw/develop/dist/posts-dev.user.js
 // @grant       none
@@ -32,7 +32,7 @@
     const notifyElTemp = document.createElement("div");
 
     notifyWrapperTemp.innerHTML =
-      '<div style="font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif;position: fixed;top: 0px;right: 0px;bottom: unset;left: 0px;z-index: 4000;padding: 48px 16px;pointer-events: none;display: flex;flex-direction: column;align-items: flex-end;"></div>';
+      '<div style="font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif;position: fixed;top: 0px;right: 0px;bottom: unset;left: 0px;z-index: 4000;padding: 32px;pointer-events: none;display: flex;flex-direction: column;align-items: flex-end;"></div>';
     notifyElTemp.innerHTML =
       '<section role="region" style="pointer-events: auto;flex-wrap: wrap;background-color: #333;margin: 0px;color: #dedede;padding: 12px 16px;border-radius: 8px;max-width: 280px;box-shadow: 0 5px 10px rgba(0,0,0,0.5);margin-bottom: 12px;"><h3 style="margin-bottom: 8px;margin-top:0;padding: 0;font-weight: bold;font-size: 12px;">[Dark Hole]</h3><p style="font-size: 16px;line-height: 22px;padding: 0;margin:0;" data-notify-content></p></section>';
 

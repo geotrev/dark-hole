@@ -5,7 +5,7 @@
 // @author      George Treviranus
 // @run-at      document-idle
 // @match       https://old.reddit.com/user/*/(comments|submitted)
-// @version     1.0.0-beta.11
+// @version     1.0.0-beta.12
 // @downloadURL https://github.com/geotrev/dark-hole/raw/develop/dist/submissions-dev.user.js
 // @updateURL   https://github.com/geotrev/dark-hole/raw/develop/dist/submissions-dev.user.js
 // @grant       none

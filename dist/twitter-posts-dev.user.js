@@ -5,7 +5,7 @@
 // @author      George Treviranus
 // @run-at      document-idle
 // @match       https://twitter.com/*
-// @version     1.0.0-beta.6
+// @version     1.0.0-beta.7
 // @downloadURL https://github.com/geotrev/dark-hole/raw/develop/dist/posts-dev.user.js
 // @updateURL   https://github.com/geotrev/dark-hole/raw/develop/dist/posts-dev.user.js
 // @grant       none
@@ -94,6 +94,42 @@
   }
 
   const notify = new Notify();
+
+  /**
+   * Given a DOM state, repeatedly call the given callback condition until it returns truthy.
+   *
+   * @param {*} callback
+   * @param {string} failMsg
+   * @param {{tries: number, interval: number}} timing
+   * @returns {*}
+   */
+  async function load(callback, failMsg, timing = {}) {
+    const tries = timing.tries || 10;
+    const interval = timing.interval || 100;
+    const message =
+      failMsg ||
+      "Unable to resolve value after" + " " + String(tries * interval) + "ms.";
+
+    return new Promise((resolve, reject) => {
+      let i = 0;
+
+      const int = setInterval(() => {
+        const value = callback();
+        if (value) {
+          clearInterval(int);
+          resolve(value);
+        }
+
+        if (++i === tries) {
+          clearInterval(int);
+          if (failMsg) {
+            notify({ content: message });
+          }
+          reject();
+        }
+      }, interval);
+    })
+  }
 
   async function exec(_cells = []) {
     /**
@@ -189,18 +225,16 @@
 
   function init() {
     const pathname = window?.location?.pathname;
-    const handle = getTwitterHandle();
 
-    console.log("Initializing Twitter Posts script...");
+    // This may take a few seconds to load depending on the internet connection. We need to wait for an async page render to resolve.
+    const handle = load(getTwitterHandle);
 
     // Only run this script on posts, replies, or media profile page tabs
-
     if (
       pathname === `/${handle}` ||
       pathname === `/${handle}/with_replies` ||
       pathname === `/${handle}/media`
     ) {
-      console.log("Notifying...");
       notify({
         content:
           "Ready to clean up your data? NOTE: this is a destructive action. Make sure you have a backup of your data before proceeding.",

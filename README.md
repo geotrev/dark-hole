@@ -8,7 +8,7 @@ Protecting your social media presence can be challenging. What happens when Twit
 
 Dark Hole tool allows you to vote with your data and remove your posts, likes, bookmarks, and the like from your account, thus slowly reducing the value of these platforms as more people indulge their data rights.
 
-As should be expected, **none of these scripts store, process, or send any data to a third party (or me).** Please view the scripts for yourself - they are written to be as plain and understandable as possible. The only data exchange that ever happens is on the platform itself (e.g., deletion of data).
+As should be expected, **none of these scripts store, process, or send any data to a third party (or me).** Please view the scripts for yourself - they are written to be as understandable as possible. The only data exchange that ever happens is on the platform itself (e.g., deletion of posts).
 
 ## Usage
 

@@ -13,7 +13,7 @@ export async function load(callback, failMsg, timing = {}) {
   const interval = timing.interval || 100
   const message =
     failMsg ||
-    "Unable to resolve value after" + " " + String(tries * interval) + "ms."
+    "Unable to resolve value after " + String(tries * interval) + "ms."
 
   return new Promise((resolve, reject) => {
     let i = 0

@@ -101,11 +101,11 @@ async function exec(_cells = []) {
   }
 }
 
-function init() {
+async function init() {
   const pathname = window?.location?.pathname
 
   // This may take a few seconds to load depending on the internet connection. We need to wait for an async page render to resolve.
-  const handle = load(getTwitterHandle)
+  const handle = await load(getTwitterHandle)
 
   // Only run this script on posts, replies, or media profile page tabs
   if (

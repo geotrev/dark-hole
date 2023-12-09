@@ -5,7 +5,7 @@
 // @author      George Treviranus
 // @run-at      document-idle
 // @match       https://twitter.com/*
-// @version     1.0.0-beta.8
+// @version     1.0.0-beta.9
 // @downloadURL https://github.com/geotrev/dark-hole/raw/develop/dist/posts-dev.user.js
 // @updateURL   https://github.com/geotrev/dark-hole/raw/develop/dist/posts-dev.user.js
 // @grant       none
@@ -65,6 +65,7 @@
 
       if (content) {
         notify.querySelector("p").innerText = content;
+        notify.querySelector("p").style.marginBlockEnd = "12px";
       }
 
       if (actions.length > 0) {

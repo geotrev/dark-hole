@@ -36,6 +36,7 @@ function Notify() {
 
     if (content) {
       notify.querySelector("p").innerText = content
+      notify.querySelector("p").style.marginBlockEnd = "12px"
     }
 
     if (actions.length > 0) {

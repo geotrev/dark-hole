@@ -1,7 +1,8 @@
 import { notify } from "./notify"
 
 /**
- * Given a DOM state, repeatedly call the given callback condition until it returns truthy.
+ * Given a DOM state, repeatedly call the given callback until it returns truthy.
+ * Show a message if unable to resolve.
  *
  * @param {*} callback
  * @param {string} failMsg

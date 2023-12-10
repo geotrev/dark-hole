@@ -5,7 +5,7 @@
 // @author      George Treviranus
 // @run-at      document-idle
 // @match       https://twitter.com/*
-// @version     1.0.0-beta.12
+// @version     1.0.0-beta.13
 // @downloadURL https://github.com/geotrev/dark-hole/raw/develop/dist/posts-dev.user.js
 // @updateURL   https://github.com/geotrev/dark-hole/raw/develop/dist/posts-dev.user.js
 // @grant       none
@@ -97,7 +97,8 @@
   const notify = new Notify();
 
   /**
-   * Given a DOM state, repeatedly call the given callback condition until it returns truthy.
+   * Given a DOM state, repeatedly call the given callback until it returns truthy.
+   * Show a message if unable to resolve.
    *
    * @param {*} callback
    * @param {string} failMsg
@@ -130,6 +131,25 @@
         }
       }, interval);
     })
+  }
+
+  async function initialize({
+    urlPaths,
+    handler,
+    message,
+    actionLabel = "🧹 Begin Removal",
+  }) {
+    const pathname = window?.location?.pathname;
+
+    // Only run this script on posts, replies, or media profile page tabs
+    if (!urlPaths.some((v) => pathname === v)) return
+
+    // If one of the paths matches, alert the user to begin
+    notify({
+      content: message,
+      actions: [{ label: actionLabel, handler }],
+      delay: 60000,
+    });
   }
 
   async function exec(_cells = []) {
@@ -223,28 +243,16 @@
       console.log("✨ Done!");
     }
   }
-
-  async function init() {
-    const pathname = window?.location?.pathname;
-
+  (async function () {
     // This may take a few seconds to load depending on the internet connection. We need to wait for an async page render to resolve.
     const handle = await load(getTwitterHandle);
 
-    // Only run this script on posts, replies, or media profile page tabs
-    if (
-      pathname === `/${handle}` ||
-      pathname === `/${handle}/with_replies` ||
-      pathname === `/${handle}/media`
-    ) {
-      notify({
-        content:
-          "Ready to clean up your data? NOTE: this is a destructive action. Make sure you have a backup of your data before proceeding.",
-        actions: [{ label: "🧹 Begin Removal", handler: exec }],
-        delay: 60000,
-      });
-    }
-  }
-
-  init();
+    initialize({
+      message:
+        "Ready to clean up your data?\nNOTE: this is a destructive action. Make sure you have a backup of your data before proceeding.",
+      handler: exec,
+      urlPaths: [`/${handle}`, `/${handle}/with_replies`, `/${handle}/media`],
+    });
+  })();
 
 })();

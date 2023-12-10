@@ -1,7 +1,7 @@
 import { getTwitterHandle } from "../utils/get-twitter-handle.js"
-import { notify } from "../utils/notify.js"
 import { load } from "../utils/load.js"
 import { stopScript } from "../utils/stop-script.js"
+import { initialize } from "../utils/initialize.js"
 
 let SHOULD_STOP = false
 
@@ -101,25 +101,14 @@ async function exec(_cells = []) {
   }
 }
 
-async function init() {
-  const pathname = window?.location?.pathname
-
+;(async function () {
   // This may take a few seconds to load depending on the internet connection. We need to wait for an async page render to resolve.
   const handle = await load(getTwitterHandle)
 
-  // Only run this script on posts, replies, or media profile page tabs
-  if (
-    pathname === `/${handle}` ||
-    pathname === `/${handle}/with_replies` ||
-    pathname === `/${handle}/media`
-  ) {
-    notify({
-      content:
-        "Ready to clean up your data? NOTE: this is a destructive action. Make sure you have a backup of your data before proceeding.",
-      actions: [{ label: "🧹 Begin Removal", handler: exec }],
-      delay: 60000,
-    })
-  }
-}
-
-init()
+  initialize({
+    message:
+      "Ready to clean up your data?\nNOTE: this is a destructive action. Make sure you have a backup of your data before proceeding.",
+    handler: exec,
+    urlPaths: [`/${handle}`, `/${handle}/with_replies`, `/${handle}/media`],
+  })
+})()

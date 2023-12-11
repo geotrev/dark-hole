@@ -5,7 +5,7 @@ import { initialize } from "../utils/initialize.js"
 
 let SHOULD_STOP = false
 
-async function exec(_cells = []) {
+async function handler(_cells = []) {
   /**
    * Specify your Twitter handle:
    */
@@ -95,7 +95,7 @@ async function exec(_cells = []) {
 
   if (cells.length) {
     console.log("🧲 There are more tweets to delete")
-    await exec(cells)
+    await handler(cells)
   } else {
     console.log("✨ Done!")
   }
@@ -103,12 +103,16 @@ async function exec(_cells = []) {
 
 ;(async function () {
   // This may take a few seconds to load depending on the internet connection. We need to wait for an async page render to resolve.
-  const handle = await load(getTwitterHandle)
+  const twitterHandle = await load(getTwitterHandle)
 
   initialize({
     message:
       "Ready to clean up your data?\nNOTE: this is a destructive action. Make sure you have a backup of your data before proceeding.",
-    handler: exec,
-    urlPaths: [`/${handle}`, `/${handle}/with_replies`, `/${handle}/media`],
+    handler: handler,
+    urlPaths: [
+      `/${twitterHandle}`,
+      `/${twitterHandle}/with_replies`,
+      `/${twitterHandle}/media`,
+    ],
   })
 })()

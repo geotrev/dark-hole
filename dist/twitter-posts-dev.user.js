@@ -5,7 +5,7 @@
 // @author      George Treviranus
 // @run-at      document-idle
 // @match       https://twitter.com/*
-// @version     1.0.0-beta.16
+// @version     1.0.0-beta.17
 // @downloadURL https://github.com/geotrev/dark-hole/raw/develop/dist/posts-dev.user.js
 // @updateURL   https://github.com/geotrev/dark-hole/raw/develop/dist/posts-dev.user.js
 // @grant       none
@@ -27,74 +27,84 @@
     )
   }
 
-  function Notify() {
-    const notifyWrapperTemp = document.createElement("div");
-    const notifyElTemp = document.createElement("div");
+  class Notify {
+    /**
+     * The current notifications queue. it is incremented and
+     * decremented as notifications are added and removed.
+     */
+    static queue = 0
 
-    notifyWrapperTemp.innerHTML =
-      '<div style="font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif;position: fixed;top: 0px;right: 0px;bottom: unset;left: 0px;z-index: 4000;padding: 32px;pointer-events: none;display: flex;flex-direction: column;align-items: flex-end;" data-dh-notify-container></div>';
-    notifyElTemp.innerHTML =
-      '<section role="region" style="pointer-events: auto;flex-wrap: wrap;background-color: #333;margin: 0px;color: #dedede;padding: 24px;border-radius: 8px;max-width: 280px;box-shadow: 0 5px 10px rgba(0,0,0,0.5);margin-bottom: 12px;" data-dh-notify><h3 style="margin-bottom: 8px;margin-top:0;padding: 0;font-weight: bold;font-size: 12px;" data-dh-notify-heading>[Dark Hole]</h3><p style="font-size: 16px;line-height: 22px;padding: 0;margin:0;" data-dh-notify-content></p></section>';
+    /**
+     * The default delay for notifications to be dismissed.
+     */
+    static DEFAULT_DELAY = 2000
 
-    const notifyWrapper = notifyWrapperTemp.firstElementChild;
-    const notifyEl = notifyElTemp.firstElementChild;
-    let queue = 0;
+    constructor() {
+      const notifyWrapperTemp = document.createElement("div");
+      const notifyElTemp = document.createElement("div");
 
-    const DEFAULT_DELAY = 2000;
+      notifyWrapperTemp.innerHTML =
+        '<div style="font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif;position: fixed;top: 0px;right: 0px;bottom: unset;left: 0px;z-index: 4000;padding: 32px;pointer-events: none;display: flex;flex-direction: column;align-items: flex-end;" data-dh-notify-container></div>';
+      notifyElTemp.innerHTML =
+        '<section role="region" style="pointer-events: auto;flex-wrap: wrap;background-color: #333;margin: 0px;color: #dedede;padding: 24px;border-radius: 8px;max-width: 280px;box-shadow: 0 5px 10px rgba(0,0,0,0.5);margin-bottom: 12px;" data-dh-notify><h3 style="margin-bottom: 8px;margin-top:0;padding: 0;font-weight: bold;font-size: 12px;" data-dh-notify-heading>[Dark Hole]</h3><p style="font-size: 16px;line-height: 22px;padding: 0;margin:0 0 12px 0;" data-dh-notify-message></p></section>';
 
-    function queueIsEmpty() {
-      return queue <= 0
+      this.notifyWrapper = notifyWrapperTemp.firstElementChild;
+      this.notifyEl = notifyElTemp.firstElementChild;
+
+      document.body.appendChild(this.notifyWrapper);
+      document.addEventListener("keydown", this.handleKeyDown, true);
     }
 
-    function dismiss() {
-      if (queueIsEmpty()) return
+    handleKeyDown = (e) => {
+      if (this.queueIsEmpty() || e.key !== "Escape") return
 
-      notifyWrapper.removeChild(notifyWrapper.firstElementChild);
-      queue -= 1;
+      e.preventDefault();
+      this.dismiss();
     }
 
-    const trigger = ({ content, delay = DEFAULT_DELAY, actions = [] }) => {
-      const notify = notifyEl.cloneNode(true);
+    queueIsEmpty = () => {
+      return this.queue <= 0
+    }
 
-      if (content) {
-        notify.querySelector("p").innerText = content;
-        notify.querySelector("p").style.marginBlockEnd = "12px";
+    dismiss = () => {
+      if (this.queueIsEmpty()) return
+
+      this.notifyWrapper.removeChild(this.notifyWrapper.firstElementChild);
+      this.queue -= 1;
+    }
+
+    render = ({ message, delay = this.DEFAULT_DELAY, actions = [] }) => {
+      const notify = this.notifyEl.cloneNode(true);
+
+      // Assign message to content node
+      if (message) {
+        const notifyContentEl = notify.querySelector("[data-dh-notify-message");
+
+        notifyContentEl.innerText = message;
       }
 
+      // Attach action callbacks to DOM nodes
       if (actions.length > 0) {
         for (const action of actions) {
           const actionEl = document.createElement("button");
+
+          actionEl.dataset.dhNotifyAction = true;
           actionEl.style.marginInlineEnd = "8px";
           actionEl.innerText = action.label;
 
           actionEl.addEventListener("click", () => {
             action.handler();
-            dismiss();
+            this.dismiss();
           });
 
           notify.appendChild(actionEl);
         }
       }
 
-      notifyWrapper.appendChild(notify);
-      queue += 1;
-      setTimeout(dismiss, delay);
-    };
-
-    document.body.appendChild(notifyWrapper);
-
-    // Handle notification cleanup if Escape key is pressed.
-
-    const handleKeyDown = (e) => {
-      if (queueIsEmpty() || e.key !== "Escape") return
-
-      e.preventDefault();
-      dismiss();
-    };
-
-    document.addEventListener("keydown", handleKeyDown, true);
-
-    return trigger
+      this.notifyWrapper.appendChild(notify);
+      this.queue += 1;
+      setTimeout(this.dismiss, delay);
+    }
   }
 
   const notify = new Notify();
@@ -148,14 +158,14 @@
     if (!urlPaths.some((v) => pathname === v)) return
 
     // If one of the paths matches, alert the user to begin
-    notify({
-      content: message,
+    notify.render({
+      message,
       actions: [{ label: actionLabel, handler }],
       delay: 60000,
     });
   }
 
-  async function exec(_cells = []) {
+  async function handler(_cells = []) {
     /**
      * Specify your Twitter handle:
      */
@@ -241,20 +251,24 @@
 
     if (cells.length) {
       console.log("🧲 There are more tweets to delete");
-      await exec(cells);
+      await handler(cells);
     } else {
       console.log("✨ Done!");
     }
   }
   (async function () {
     // This may take a few seconds to load depending on the internet connection. We need to wait for an async page render to resolve.
-    const handle = await load(getTwitterHandle);
+    const twitterHandle = await load(getTwitterHandle);
 
     initialize({
       message:
         "Ready to clean up your data?\nNOTE: this is a destructive action. Make sure you have a backup of your data before proceeding.",
-      handler: exec,
-      urlPaths: [`/${handle}`, `/${handle}/with_replies`, `/${handle}/media`],
+      handler: handler,
+      urlPaths: [
+        `/${twitterHandle}`,
+        `/${twitterHandle}/with_replies`,
+        `/${twitterHandle}/media`,
+      ],
     });
   })();
 

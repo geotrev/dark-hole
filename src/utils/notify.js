@@ -24,14 +24,7 @@ function Notify() {
     queue -= 1
   }
 
-  this.handleKeyDown = (e) => {
-    if (queueIsEmpty() || e.key !== "Escape") return
-
-    e.preventDefault()
-    dismiss()
-  }
-
-  this.trigger = ({ content, delay = DEFAULT_DELAY, actions = [] }) => {
+  const trigger = ({ content, delay = DEFAULT_DELAY, actions = [] }) => {
     const notify = notifyEl.cloneNode(true)
 
     if (content) {
@@ -60,12 +53,19 @@ function Notify() {
   }
 
   document.body.appendChild(notifyWrapper)
-  document.addEventListener("keydown", this.handleKeyDown, true)
 
-  return () =>
-    console.log(
-      "[Dark Hole] notify not called correctly: use notify.trigger(...) to create a notification"
-    )
+  // Handle notification cleanup if Escape key is pressed.
+
+  const handleKeyDown = (e) => {
+    if (queueIsEmpty() || e.key !== "Escape") return
+
+    e.preventDefault()
+    dismiss()
+  }
+
+  document.addEventListener("keydown", handleKeyDown, true)
+
+  return trigger
 }
 
 export const notify = new Notify()

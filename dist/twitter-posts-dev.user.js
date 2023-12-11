@@ -5,7 +5,7 @@
 // @author      George Treviranus
 // @run-at      document-idle
 // @match       https://twitter.com/*
-// @version     1.0.0-beta.15
+// @version     1.0.0-beta.16
 // @downloadURL https://github.com/geotrev/dark-hole/raw/develop/dist/posts-dev.user.js
 // @updateURL   https://github.com/geotrev/dark-hole/raw/develop/dist/posts-dev.user.js
 // @grant       none
@@ -53,14 +53,7 @@
       queue -= 1;
     }
 
-    this.handleKeyDown = (e) => {
-      if (queueIsEmpty() || e.key !== "Escape") return
-
-      e.preventDefault();
-      dismiss();
-    };
-
-    this.trigger = ({ content, delay = DEFAULT_DELAY, actions = [] }) => {
+    const trigger = ({ content, delay = DEFAULT_DELAY, actions = [] }) => {
       const notify = notifyEl.cloneNode(true);
 
       if (content) {
@@ -89,12 +82,19 @@
     };
 
     document.body.appendChild(notifyWrapper);
-    document.addEventListener("keydown", this.handleKeyDown, true);
 
-    return () =>
-      console.log(
-        "[Dark Hole] notify not called correctly: use notify.trigger(...) to create a notification"
-      )
+    // Handle notification cleanup if Escape key is pressed.
+
+    const handleKeyDown = (e) => {
+      if (queueIsEmpty() || e.key !== "Escape") return
+
+      e.preventDefault();
+      dismiss();
+    };
+
+    document.addEventListener("keydown", handleKeyDown, true);
+
+    return trigger
   }
 
   const notify = new Notify();
@@ -148,7 +148,7 @@
     if (!urlPaths.some((v) => pathname === v)) return
 
     // If one of the paths matches, alert the user to begin
-    notify.trigger({
+    notify({
       content: message,
       actions: [{ label: actionLabel, handler }],
       delay: 60000,

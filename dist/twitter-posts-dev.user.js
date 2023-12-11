@@ -5,7 +5,7 @@
 // @author      George Treviranus
 // @run-at      document-idle
 // @match       https://twitter.com/*
-// @version     1.0.0-beta.13
+// @version     1.0.0-beta.14
 // @downloadURL https://github.com/geotrev/dark-hole/raw/develop/dist/posts-dev.user.js
 // @updateURL   https://github.com/geotrev/dark-hole/raw/develop/dist/posts-dev.user.js
 // @grant       none
@@ -34,7 +34,7 @@
     notifyWrapperTemp.innerHTML =
       '<div style="font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif;position: fixed;top: 0px;right: 0px;bottom: unset;left: 0px;z-index: 4000;padding: 32px;pointer-events: none;display: flex;flex-direction: column;align-items: flex-end;"></div>';
     notifyElTemp.innerHTML =
-      '<section role="region" style="pointer-events: auto;flex-wrap: wrap;background-color: #333;margin: 0px;color: #dedede;padding: 12px 16px;border-radius: 8px;max-width: 280px;box-shadow: 0 5px 10px rgba(0,0,0,0.5);margin-bottom: 12px;"><h3 style="margin-bottom: 8px;margin-top:0;padding: 0;font-weight: bold;font-size: 12px;">[Dark Hole]</h3><p style="font-size: 16px;line-height: 22px;padding: 0;margin:0;" data-notify-content></p></section>';
+      '<section role="region" style="pointer-events: auto;flex-wrap: wrap;background-color: #333;margin: 0px;color: #dedede;padding: 24px;border-radius: 8px;max-width: 280px;box-shadow: 0 5px 10px rgba(0,0,0,0.5);margin-bottom: 12px;"><h3 style="margin-bottom: 8px;margin-top:0;padding: 0;font-weight: bold;font-size: 12px;">[Dark Hole]</h3><p style="font-size: 16px;line-height: 22px;padding: 0;margin:0;" data-notify-content></p></section>';
 
     const notifyWrapper = notifyWrapperTemp.firstElementChild;
     const notifyEl = notifyElTemp.firstElementChild;
@@ -53,14 +53,14 @@
       queue -= 1;
     }
 
-    function handleKeydown(e) {
+    this.handleKeyDown = (e) => {
       if (queueIsEmpty() || e.key !== "Escape") return
 
       e.preventDefault();
       dismiss();
-    }
+    };
 
-    function trigger({ content, delay = DEFAULT_DELAY, actions = [] }) {
+    this.trigger = ({ content, delay = DEFAULT_DELAY, actions = [] }) => {
       const notify = notifyEl.cloneNode(true);
 
       if (content) {
@@ -86,12 +86,15 @@
       notifyWrapper.appendChild(notify);
       queue += 1;
       setTimeout(dismiss, delay);
-    }
+    };
 
     document.body.appendChild(notifyWrapper);
-    document.addEventListener("keydown", handleKeydown, true);
+    document.addEventListener("keydown", this.handleKeyDown, true);
 
-    return trigger
+    return () =>
+      console.log(
+        "[Dark Hole] notify not called correctly: use notify.trigger(...) to create a notification"
+      )
   }
 
   const notify = new Notify();
@@ -145,7 +148,7 @@
     if (!urlPaths.some((v) => pathname === v)) return
 
     // If one of the paths matches, alert the user to begin
-    notify({
+    notify.trigger({
       content: message,
       actions: [{ label: actionLabel, handler }],
       delay: 60000,

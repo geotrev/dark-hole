@@ -12,7 +12,7 @@ export async function initialize({
   if (!urlPaths.some((v) => pathname === v)) return
 
   // If one of the paths matches, alert the user to begin
-  notify({
+  notify.trigger({
     content: message,
     actions: [{ label: actionLabel, handler }],
     delay: 60000,

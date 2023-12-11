@@ -5,7 +5,7 @@
 // @author      George Treviranus
 // @run-at      document-idle
 // @match       https://www.twitter.com/*/likes
-// @version     1.0.0-beta.14
+// @version     1.0.0-beta.15
 // @downloadURL https://github.com/geotrev/dark-hole/raw/develop/dist/likes-dev.user.js
 // @updateURL   https://github.com/geotrev/dark-hole/raw/develop/dist/likes-dev.user.js
 // @grant       none

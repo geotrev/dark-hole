@@ -5,7 +5,7 @@
 // @author      George Treviranus
 // @run-at      document-idle
 // @match       https://twitter.com/*/likes
-// @version     1.0.0-beta.20
+// @version     1.0.0-beta.21
 // @downloadURL https://github.com/geotrev/dark-hole/raw/develop/dist/twitter-likes-dev.user.js
 // @updateURL   https://github.com/geotrev/dark-hole/raw/develop/dist/twitter-likes-dev.user.js
 // @grant       none
@@ -46,7 +46,7 @@
       notifyWrapperTemp.innerHTML =
         '<div style="font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif;position: fixed;top: 0px;right: 0px;bottom: unset;left: 0px;z-index: 4000;padding: 32px;pointer-events: none;display: flex;flex-direction: column;align-items: flex-end;" data-dh-notify-container></div>';
       notifyElTemp.innerHTML =
-        '<section role="region" style="pointer-events: auto;flex-wrap: wrap;background-color: #333;margin: 0px;color: #dedede;padding: 24px;border-radius: 8px;max-width: 280px;box-shadow: 0 5px 10px rgba(0,0,0,0.5);margin-bottom: 12px;" data-dh-notify><h3 style="margin-bottom: 8px;margin-top:0;padding: 0;font-weight: bold;font-size: 12px;" data-dh-notify-heading>[Dark Hole]</h3><p style="font-size: 16px;line-height: 22px;padding: 0;margin:0 0 12px 0;" data-dh-notify-message></p></section>';
+        '<section role="region" style="pointer-events: auto;flex-wrap: wrap;background-color: #333;margin: 0px;color: #dedede;padding: 20px;border-radius: 8px;max-width: 280px;box-shadow: 0 5px 10px rgba(0,0,0,0.5);margin-bottom: 12px;" data-dh-notify><h3 style="margin-bottom: 8px;margin-top:0;padding: 0;font-weight: bold;font-size: 12px;" data-dh-notify-heading></h3><p style="font-size: 16px;line-height: 22px;padding: 0;margin:0 0 12px 0;" data-dh-notify-message></p></section>';
 
       this.notifyWrapper = notifyWrapperTemp.firstElementChild;
       this.notifyEl = notifyElTemp.firstElementChild;
@@ -73,8 +73,16 @@
       this.queue -= 1;
     }
 
-    render = ({ message, delay = this.DEFAULT_DELAY, actions = [] }) => {
+    render = ({
+      title = "",
+      message,
+      delay = this.DEFAULT_DELAY,
+      actions = [],
+    }) => {
       const notify = this.notifyEl.cloneNode(true);
+
+      const titleEl = notify.querySelector("[data-dh-notify-heading]");
+      titleEl.innerText = "[Dark Hole]" + " " + title;
 
       // Assign message to content node
       if (message) {
@@ -244,6 +252,7 @@
     if (!twitterHandle) return
 
     initialize({
+      title: "Twitter Likes",
       message:
         "Ready to clean up your data?\nNOTE: this is a destructive action. Make sure you have a backup of your data before proceeding.",
       handler,

@@ -118,6 +118,7 @@ async function handler(_cells = []) {
   if (!twitterHandle) return
 
   initialize({
+    title: "Twitter Posts",
     message:
       "Ready to clean up your data?\nNOTE: this is a destructive action. Make sure you have a backup of your data before proceeding.",
     handler,

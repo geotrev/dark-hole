@@ -73,6 +73,8 @@ async function handler(_cells = []) {
   // This may take a few seconds to load depending on the internet connection. We need to wait for an async page render to resolve.
   const twitterHandle = await load(getTwitterHandle)
 
+  if (!twitterHandle) return
+
   initialize({
     message:
       "Ready to clean up your data?\nNOTE: this is a destructive action. Make sure you have a backup of your data before proceeding.",

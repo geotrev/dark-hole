@@ -5,9 +5,9 @@
 // @author      George Treviranus
 // @run-at      document-idle
 // @match       https://old.reddit.com/user/*/saved
-// @version     1.0.0-beta.18
-// @downloadURL https://github.com/geotrev/dark-hole/raw/develop/dist/saved-dev.user.js
-// @updateURL   https://github.com/geotrev/dark-hole/raw/develop/dist/saved-dev.user.js
+// @version     1.0.0-beta.19
+// @downloadURL https://github.com/geotrev/dark-hole/raw/develop/dist/reddit-saved-dev.user.js
+// @updateURL   https://github.com/geotrev/dark-hole/raw/develop/dist/reddit-saved-dev.user.js
 // @grant       none
 // ==/UserScript==
 (function () {

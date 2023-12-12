@@ -10,12 +10,12 @@ import metaVersions from "./meta-versions.json"
 const repoRootUrl = pkg.repository.url.slice(4, -4)
 const scriptSources = glob.sync(path.resolve("src/!(utils)/*.js"))
 
-function getScriptUrl(name) {
-  return `${repoRootUrl}/raw/main/dist/${name}.user.js`
+function getScriptUrl(dir, name) {
+  return `${repoRootUrl}/raw/main/dist/${dir}-${name}.user.js`
 }
 
-function getBetaScriptUrl(name) {
-  return `${repoRootUrl}/raw/develop/dist/${name}-dev.user.js`
+function getBetaScriptUrl(dir, name) {
+  return `${repoRootUrl}/raw/develop/dist/${dir}-${name}-dev.user.js`
 }
 
 /**
@@ -45,8 +45,8 @@ export default scriptSources.reduce((configs, sourcePath) => {
     ? JSON.parse(fs.readFileSync(metaPath, "utf8"))
     : undefined
 
-  const scriptUrl = getScriptUrl(name)
-  const betaScriptUrl = getBetaScriptUrl(name)
+  const scriptUrl = getScriptUrl(dir, name)
+  const betaScriptUrl = getBetaScriptUrl(dir, name)
 
   return [
     ...configs,

@@ -4,10 +4,10 @@
 // @namespace   https://github.com/geotrev/dark-hole
 // @author      George Treviranus
 // @run-at      document-idle
-// @match       https://www.twitter.com/*/likes
-// @version     1.0.0-beta.18
-// @downloadURL https://github.com/geotrev/dark-hole/raw/develop/dist/likes-dev.user.js
-// @updateURL   https://github.com/geotrev/dark-hole/raw/develop/dist/likes-dev.user.js
+// @match       https://twitter.com/*/likes
+// @version     1.0.0-beta.19
+// @downloadURL https://github.com/geotrev/dark-hole/raw/develop/dist/twitter-likes-dev.user.js
+// @updateURL   https://github.com/geotrev/dark-hole/raw/develop/dist/twitter-likes-dev.user.js
 // @grant       none
 // ==/UserScript==
 (function () {
@@ -240,6 +240,8 @@
   (async function () {
     // This may take a few seconds to load depending on the internet connection. We need to wait for an async page render to resolve.
     const twitterHandle = await load(getTwitterHandle);
+
+    if (!twitterHandle) return
 
     initialize({
       message:

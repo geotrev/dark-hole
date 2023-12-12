@@ -1,5 +1,5 @@
 {
   "name": "Dark Hole - Twitter Likes",
   "description": "Automated content deletion",
-  "match": "https://www.twitter.com/*/likes"
+  "match": "https://twitter.com/*/likes"
 }

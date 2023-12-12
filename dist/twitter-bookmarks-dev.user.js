@@ -4,10 +4,10 @@
 // @namespace   https://github.com/geotrev/dark-hole
 // @author      George Treviranus
 // @run-at      document-idle
-// @match       https://www.twitter.com/i/bookmarks
-// @version     1.0.0-beta.18
-// @downloadURL https://github.com/geotrev/dark-hole/raw/develop/dist/bookmarks-dev.user.js
-// @updateURL   https://github.com/geotrev/dark-hole/raw/develop/dist/bookmarks-dev.user.js
+// @match       https://twitter.com/i/bookmarks
+// @version     1.0.0-beta.19
+// @downloadURL https://github.com/geotrev/dark-hole/raw/develop/dist/twitter-bookmarks-dev.user.js
+// @updateURL   https://github.com/geotrev/dark-hole/raw/develop/dist/twitter-bookmarks-dev.user.js
 // @grant       none
 // ==/UserScript==
 (function () {

@@ -4,7 +4,7 @@
 // @namespace   https://github.com/geotrev/dark-hole
 // @author      George Treviranus
 // @run-at      document-idle
-// @match       https://twitter.com/*/(with_replies|media)
+// @match       https://twitter.com/*/*
 // @version     1.0.0
 // @downloadURL https://github.com/geotrev/dark-hole/raw/main/dist/twitter-posts.user.js
 // @updateURL   https://github.com/geotrev/dark-hole/raw/main/dist/twitter-posts.user.js

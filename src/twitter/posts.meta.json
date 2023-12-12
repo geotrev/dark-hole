@@ -1,5 +1,5 @@
 {
   "name": "Dark Hole - Twitter Posts",
   "description": "Automated content deletion",
-  "match": "https://twitter.com/*/(with_replies|media)"
+  "match": "https://twitter.com/*/*"
 }

@@ -5,7 +5,15 @@ import { initialize } from "../utils/initialize.js"
 
 let SHOULD_STOP = false
 
+const escapeHandler = (e) => {
+  if (e.key === "Escape") {
+    SHOULD_STOP = true
+  }
+}
+
 async function handler(_cells = []) {
+  document.addEventListener("keydown", escapeHandler, true)
+
   /**
    * Specify your Twitter handle:
    */
@@ -38,6 +46,8 @@ async function handler(_cells = []) {
   for (const cell of cells) {
     if (SHOULD_STOP) {
       stopScript("Twitter Posts")
+      document.removeEventListener("keydown", escapeHandler, true)
+
       return
     }
 
@@ -108,7 +118,7 @@ async function handler(_cells = []) {
   initialize({
     message:
       "Ready to clean up your data?\nNOTE: this is a destructive action. Make sure you have a backup of your data before proceeding.",
-    handler: handler,
+    handler,
     urlPaths: [
       `/${twitterHandle}`,
       `/${twitterHandle}/with_replies`,

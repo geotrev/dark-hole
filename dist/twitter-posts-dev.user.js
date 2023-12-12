@@ -5,7 +5,7 @@
 // @author      George Treviranus
 // @run-at      document-idle
 // @match       https://twitter.com/*/*
-// @version     1.0.0-beta.21
+// @version     1.0.0-beta.22
 // @downloadURL https://github.com/geotrev/dark-hole/raw/develop/dist/twitter-posts-dev.user.js
 // @updateURL   https://github.com/geotrev/dark-hole/raw/develop/dist/twitter-posts-dev.user.js
 // @grant       none
@@ -82,7 +82,7 @@
       const notify = this.notifyEl.cloneNode(true);
 
       const titleEl = notify.querySelector("[data-dh-notify-heading]");
-      titleEl.innerText = "[Dark Hole]" + " " + title;
+      titleEl.innerText = title ? `[Dark Hole] ${title}` : "[Dark Hole]";
 
       // Assign message to content node
       if (message) {

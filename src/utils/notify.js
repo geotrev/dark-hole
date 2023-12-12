@@ -53,7 +53,7 @@ class Notify {
     const notify = this.notifyEl.cloneNode(true)
 
     const titleEl = notify.querySelector("[data-dh-notify-heading]")
-    titleEl.innerText = "[Dark Hole]" + " " + title
+    titleEl.innerText = title ? `[Dark Hole] ${title}` : "[Dark Hole]"
 
     // Assign message to content node
     if (message) {

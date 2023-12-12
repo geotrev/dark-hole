@@ -36,6 +36,7 @@ const args = yargs(process.argv.slice(2))
       prerelease ? "beta" : undefined
     )
   }
+
   // Set a new prerelease at the new increment
   else if (prerelease) {
     const { develop } = versions
@@ -46,6 +47,7 @@ const args = yargs(process.argv.slice(2))
       prerelease ? "beta" : undefined
     )
   }
+
   // Set the version by the new increment
   else {
     const { main } = versions

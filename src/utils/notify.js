@@ -44,6 +44,12 @@ class Notify {
     this.queue -= 1
   }
 
+  dismissAll = () => {
+    while (!this.queueIsEmpty()) {
+      this.dismiss()
+    }
+  }
+
   render = ({
     title = "",
     message,

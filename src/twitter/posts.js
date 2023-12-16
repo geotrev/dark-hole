@@ -111,7 +111,7 @@ async function handler(_cells = []) {
   }
 }
 
-;(async function () {
+window?.addEventListener("DOMContentLoaded", async () => {
   // This may take a few seconds to load depending on the internet connection. We need to wait for an async page render to resolve.
   const twitterHandle = await load(getTwitterHandle)
 
@@ -124,4 +124,4 @@ async function handler(_cells = []) {
     handler,
     urlPaths: [`/${twitterHandle}/with_replies`, `/${twitterHandle}/media`],
   })
-})()
+})

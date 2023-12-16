@@ -5,9 +5,9 @@
 // @author      George Treviranus
 // @run-at      document-idle
 // @match       https://twitter.com/*/*
-// @version     1.0.0-beta.22
-// @downloadURL https://github.com/geotrev/dark-hole/raw/develop/dist/twitter-posts-dev.user.js
-// @updateURL   https://github.com/geotrev/dark-hole/raw/develop/dist/twitter-posts-dev.user.js
+// @version     1.0.0-beta.23
+// @downloadURL https://github.com/geotrev/dark-hole/raw/main/dist/twitter-posts-dev.user.js
+// @updateURL   https://github.com/geotrev/dark-hole/raw/main/dist/twitter-posts-dev.user.js
 // @grant       none
 // ==/UserScript==
 (function () {
@@ -71,6 +71,12 @@
 
       this.notifyWrapper.removeChild(this.notifyWrapper.firstElementChild);
       this.queue -= 1;
+    }
+
+    dismissAll = () => {
+      while (!this.queueIsEmpty()) {
+        this.dismiss();
+      }
     }
 
     render = ({
@@ -161,23 +167,78 @@
     notify({ content });
   }
 
-  async function initialize({
-    urlPaths,
-    handler,
-    message,
-    actionLabel = "🧹 Begin Removal",
-  }) {
-    const pathname = window?.location?.pathname;
+  const pageArgs = new Map();
+  let sessionIsInitialized = false;
 
-    // Only run this script on posts, replies, or media profile page tabs
-    if (!urlPaths.some((v) => pathname === v)) return
-
-    // If one of the paths matches, alert the user to begin
+  async function beginScript({ handler, message, actionLabel }) {
     notify.render({
       message,
       actions: [{ label: actionLabel, handler }],
       delay: 60000,
     });
+  }
+
+  /**
+   * Create event to watch for page navigation, clear existing operations,
+   * then re-initialize the script on the subsequent page.
+   */
+  async function watchNavigation() {
+    if (sessionIsInitialized) return
+
+    // START monkey patch history state
+
+    const pushState = history.pushState;
+
+    history.pushState = function () {
+      pushState.apply(history, arguments);
+    };
+
+    // END monkey patch history state
+
+    window?.addEventListener("popstate", () => {
+      notify.dismissAll();
+
+      const pathname = window?.location?.pathname;
+
+      if (pageArgs.has(pathname)) {
+        initialize({ ...pageArgs.get(pathname) });
+      }
+    });
+  }
+
+  /**
+   * This function will initialize the script on a fresh page load.
+   */
+  async function initialize({
+    pathname,
+    urlPaths,
+    handler,
+    message,
+    actionLabel = "🧹 Begin Removal",
+  }) {
+    if (pageArgs.has(pathname)) {
+      return beginScript({ ...pageArgs.get(pathname) })
+    }
+
+    sessionIsInitialized = true;
+
+    // Only run this script on posts, replies, or media profile page tabs
+    if (urlPaths.some((v) => pathname === v)) {
+      // Cache the initializing data for dynamic navigation
+      pageArgs.set(pathname, {
+        pathname,
+        urlPaths,
+        handler,
+        message,
+        actionLabel,
+      });
+
+      // Kick off the script, remove any preexisting
+      beginScript({ urlPaths, handler, message, actionLabel });
+
+      // Watch for page navigation to re-initialize
+      watchNavigation();
+    }
   }
 
   let SHOULD_STOP = false;
@@ -287,7 +348,8 @@
       console.log("✨ Done!");
     }
   }
-  (async function () {
+
+  window?.addEventListener("DOMContentLoaded", async () => {
     // This may take a few seconds to load depending on the internet connection. We need to wait for an async page render to resolve.
     const twitterHandle = await load(getTwitterHandle);
 
@@ -300,6 +362,6 @@
       handler,
       urlPaths: [`/${twitterHandle}/with_replies`, `/${twitterHandle}/media`],
     });
-  })();
+  });
 
 })();

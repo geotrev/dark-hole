@@ -1,5 +1,6 @@
 import metablock from "rollup-plugin-userscript-metablock"
 import terser from "@rollup/plugin-terser"
+import { nodeResolve } from "@rollup/plugin-node-resolve"
 import glob from "glob"
 import path from "path"
 import fs from "fs"
@@ -15,7 +16,7 @@ function getScriptUrl(dir, name) {
 }
 
 function getBetaScriptUrl(dir, name) {
-  return `${repoRootUrl}/raw/develop/dist/${dir}-${name}-dev.user.js`
+  return `${repoRootUrl}/raw/main/dist/${dir}-${name}-dev.user.js`
 }
 
 /**
@@ -71,6 +72,7 @@ export default scriptSources.reduce((configs, sourcePath) => {
         },
       ],
       plugins: [
+        nodeResolve(),
         terser({
           mangle: true,
           format: {
@@ -107,6 +109,7 @@ export default scriptSources.reduce((configs, sourcePath) => {
           ],
         },
       ],
+      plugins: [nodeResolve()],
     },
   ]
 }, [])

@@ -6,7 +6,7 @@ A set of scripts to remove your social media presence.
 
 Protecting your social media presence can be challenging. What happens when Twitter (now X) becomes unsafe, or Reddit destroys its open source community by pricing out third party apps?
 
-Dark Hole allows you to vote with your data and remove your posts, likes, bookmarks, and similar data, from your social accounts, thus slowly reducing the value of these platforms as more people indulge their data rights.
+Dark Hole allows you to vote with your data and remove your posts, likes, bookmarks, and the like. This critical act enables ordinary people to slowly reduce the value of unsafe platforms as more people indulge their data rights.
 
 > [!IMPORTANT]
 > None of these scripts store, process, or send any data to a third party or the maintainer.

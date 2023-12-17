@@ -46,7 +46,7 @@ export async function initialize({
   pathname,
   urlPaths,
   handler,
-  message,
+  message = "Ready to clean up your data?\nNOTE: this is a destructive action. Make sure you have a backup of your data before proceeding.",
   actionLabel = "🧹 Begin Removal",
 }) {
   if (pageArgs.has(pathname)) {

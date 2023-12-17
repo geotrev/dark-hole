@@ -5,7 +5,7 @@
 // @author      George Treviranus
 // @run-at      document-idle
 // @match       https://twitter.com/*/likes
-// @version     1.0.0-beta.24
+// @version     1.0.0-beta.25
 // @downloadURL https://github.com/geotrev/dark-hole/raw/main/dist/twitter-likes-dev.user.js
 // @updateURL   https://github.com/geotrev/dark-hole/raw/main/dist/twitter-likes-dev.user.js
 // @grant       none
@@ -213,7 +213,7 @@
     pathname,
     urlPaths,
     handler,
-    message,
+    message = "Ready to clean up your data?\nNOTE: this is a destructive action. Make sure you have a backup of your data before proceeding.",
     actionLabel = "🧹 Begin Removal",
   }) {
     if (pageArgs.has(pathname)) {
@@ -314,8 +314,6 @@
 
     initialize({
       title: "Twitter Likes",
-      message:
-        "Ready to clean up your data?\nNOTE: this is a destructive action. Make sure you have a backup of your data before proceeding.",
       handler,
       urlPaths: [`/${twitterHandle}/likes`],
     });

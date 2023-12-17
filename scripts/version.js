@@ -35,6 +35,8 @@ const args = yargs(process.argv.slice(2))
       "prerelease",
       prerelease ? "beta" : undefined
     )
+
+    console.log(`🎉 Successfully updated to version ${newVersions.develop}`)
   }
 
   // Set a new prerelease at the new increment
@@ -46,6 +48,8 @@ const args = yargs(process.argv.slice(2))
       increment,
       prerelease ? "beta" : undefined
     )
+
+    console.log(`🎉 Successfully updated to version ${newVersions.develop}`)
   }
 
   // Set the version by the new increment
@@ -53,6 +57,8 @@ const args = yargs(process.argv.slice(2))
     const { main } = versions
 
     newVersions.main = semver.inc(main, increment)
+
+    console.log(`🎉 Successfully updated to version ${newVersions.main}`)
   }
 
   fs.writeFileSync(

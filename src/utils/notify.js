@@ -11,16 +11,8 @@ class Notify {
   static DEFAULT_DELAY = 2000
 
   constructor() {
-    const notifyWrapperTemp = document.createElement("div")
-    const notifyElTemp = document.createElement("div")
-
-    notifyWrapperTemp.innerHTML =
-      '<div style="font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif;position: fixed;top: 0px;right: 0px;bottom: unset;left: 0px;z-index: 4000;padding: 32px;pointer-events: none;display: flex;flex-direction: column;align-items: flex-end;" data-dh-notify-container></div>'
-    notifyElTemp.innerHTML =
-      '<section role="region" style="pointer-events: auto;flex-wrap: wrap;background-color: #333;margin: 0px;color: #dedede;padding: 20px;border-radius: 8px;max-width: 280px;box-shadow: 0 5px 10px rgba(0,0,0,0.5);margin-bottom: 12px;" data-dh-notify><h3 style="margin-bottom: 8px;margin-top:0;padding: 0;font-weight: bold;font-size: 12px;" data-dh-notify-heading></h3><p style="font-size: 16px;line-height: 22px;padding: 0;margin:0 0 12px 0;" data-dh-notify-message></p></section>'
-
-    this.notifyWrapper = notifyWrapperTemp.firstElementChild
-    this.notifyEl = notifyElTemp.firstElementChild
+    this.notifyWrapper = this.buildNotifyContainer()
+    this.notifyEl = this.buildNotification()
 
     document.body.appendChild(this.notifyWrapper)
     document.addEventListener("keydown", this.handleKeyDown, true)
@@ -35,6 +27,66 @@ class Notify {
 
   queueIsEmpty = () => {
     return this.queue <= 0
+  }
+
+  buildNotifyContainer = () => {
+    const container = document.createElement("div")
+
+    container.style.fontFamily =
+      "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif"
+    container.style.position = "fixed"
+    container.style.top = "0px"
+    container.style.right = "0px"
+    container.style.bottom = "unset"
+    container.style.left = "0px"
+    container.style.zIndex = "4000"
+    container.style.padding = "32px"
+    container.style.pointerEvents = "none"
+    container.style.display = "flex"
+    container.style.flexDirection = "column"
+    container.style.alignItems = "flex-end"
+    container.dataset.dhNotifyContainer = true
+
+    return container
+  }
+
+  buildNotification = () => {
+    const notification = document.createElement("section")
+
+    notification.style.pointerEvents = "auto"
+    notification.style.flexWrap = "wrap"
+    notification.style.backgroundColor = "#333"
+    notification.style.margin = "0px"
+    notification.style.color = "#dedede"
+    notification.style.padding = "20px"
+    notification.style.borderRadius = "8px"
+    notification.style.maxWidth = "280px"
+    notification.style.boxShadow = "0 5px 10px rgba(0,0,0,0.5)"
+    notification.style.marginBottom = "12px"
+
+    const title = document.createElement("h3")
+
+    title.style.marginBottom = "8px"
+    title.style.marginTop = "0"
+    title.style.padding = "0"
+    title.style.fontWeight = "bold"
+    title.style.fontSize = "12px"
+
+    const message = document.createElement("p")
+
+    message.style.fontSize = "16px"
+    message.style.lineHeight = "22px"
+    message.style.padding = "0"
+    message.style.margin = "0 0 12px 0"
+
+    notification.dataset.dhNotify = true
+    title.dataset.dhNotifyHeading = true
+    message.dataset.dhNotifyMessage = true
+
+    notification.appendChild(title)
+    notification.appendChild(message)
+
+    return notification
   }
 
   dismiss = () => {

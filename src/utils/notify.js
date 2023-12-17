@@ -102,11 +102,16 @@ class Notify {
     }
   }
 
-  render = ({ title, message, delay = this.DEFAULT_DELAY, actions = [] }) => {
+  render = ({
+    title = "",
+    message,
+    delay = this.DEFAULT_DELAY,
+    actions = [],
+  }) => {
     const notification = this.notifyEl.cloneNode(true)
 
     const titleEl = notification.querySelector("[data-dh-notify-heading]")
-    titleEl.innerText = title ? `[Dark Hole] ${title}` : "[Dark Hole]"
+    titleEl.innerText = `[Dark Hole] ${title}`
 
     // Assign message to content node
     if (message) {

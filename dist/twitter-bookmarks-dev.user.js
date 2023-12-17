@@ -5,7 +5,7 @@
 // @author      George Treviranus
 // @run-at      document-idle
 // @match       https://twitter.com/i/bookmarks
-// @version     1.0.0-beta.28
+// @version     1.0.0-beta.29
 // @downloadURL https://github.com/geotrev/dark-hole/raw/main/dist/twitter-bookmarks-dev.user.js
 // @updateURL   https://github.com/geotrev/dark-hole/raw/main/dist/twitter-bookmarks-dev.user.js
 // @grant       none
@@ -117,11 +117,16 @@
       }
     }
 
-    render = ({ title, message, delay = this.DEFAULT_DELAY, actions = [] }) => {
+    render = ({
+      title = "",
+      message,
+      delay = this.DEFAULT_DELAY,
+      actions = [],
+    }) => {
       const notification = this.notifyEl.cloneNode(true);
 
       const titleEl = notification.querySelector("[data-dh-notify-heading]");
-      titleEl.innerText = title ? `[Dark Hole] ${title}` : "[Dark Hole]";
+      titleEl.innerText = `[Dark Hole] ${title}`;
 
       // Assign message to content node
       if (message) {

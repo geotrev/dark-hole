@@ -50,20 +50,17 @@ class Notify {
     }
   }
 
-  render = ({
-    title = "",
-    message,
-    delay = this.DEFAULT_DELAY,
-    actions = [],
-  }) => {
-    const notify = this.notifyEl.cloneNode(true)
+  render = ({ title, message, delay = this.DEFAULT_DELAY, actions = [] }) => {
+    const notification = this.notifyEl.cloneNode(true)
 
-    const titleEl = notify.querySelector("[data-dh-notify-heading]")
+    const titleEl = notification.querySelector("[data-dh-notify-heading]")
     titleEl.innerText = title ? `[Dark Hole] ${title}` : "[Dark Hole]"
 
     // Assign message to content node
     if (message) {
-      const notifyContentEl = notify.querySelector("[data-dh-notify-message")
+      const notifyContentEl = notification.querySelector(
+        "[data-dh-notify-message"
+      )
 
       notifyContentEl.innerText = message
     }
@@ -82,11 +79,11 @@ class Notify {
           this.dismiss()
         })
 
-        notify.appendChild(actionEl)
+        notification.appendChild(actionEl)
       }
     }
 
-    this.notifyWrapper.appendChild(notify)
+    this.notifyWrapper.appendChild(notification)
     this.queue += 1
     setTimeout(this.dismiss, delay)
   }

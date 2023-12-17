@@ -5,7 +5,7 @@
 // @author      George Treviranus
 // @run-at      document-idle
 // @match       https://twitter.com/*/likes
-// @version     1.0.0-beta.26
+// @version     1.0.0-beta.27
 // @downloadURL https://github.com/geotrev/dark-hole/raw/main/dist/twitter-likes-dev.user.js
 // @updateURL   https://github.com/geotrev/dark-hole/raw/main/dist/twitter-likes-dev.user.js
 // @grant       none
@@ -79,20 +79,17 @@
       }
     }
 
-    render = ({
-      title = "",
-      message,
-      delay = this.DEFAULT_DELAY,
-      actions = [],
-    }) => {
-      const notify = this.notifyEl.cloneNode(true);
+    render = ({ title, message, delay = this.DEFAULT_DELAY, actions = [] }) => {
+      const notification = this.notifyEl.cloneNode(true);
 
-      const titleEl = notify.querySelector("[data-dh-notify-heading]");
+      const titleEl = notification.querySelector("[data-dh-notify-heading]");
       titleEl.innerText = title ? `[Dark Hole] ${title}` : "[Dark Hole]";
 
       // Assign message to content node
       if (message) {
-        const notifyContentEl = notify.querySelector("[data-dh-notify-message");
+        const notifyContentEl = notification.querySelector(
+          "[data-dh-notify-message"
+        );
 
         notifyContentEl.innerText = message;
       }
@@ -111,11 +108,11 @@
             this.dismiss();
           });
 
-          notify.appendChild(actionEl);
+          notification.appendChild(actionEl);
         }
       }
 
-      this.notifyWrapper.appendChild(notify);
+      this.notifyWrapper.appendChild(notification);
       this.queue += 1;
       setTimeout(this.dismiss, delay);
     }

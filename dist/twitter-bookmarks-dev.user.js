@@ -5,7 +5,7 @@
 // @author      George Treviranus
 // @run-at      document-idle
 // @match       https://twitter.com/i/bookmarks
-// @version     1.0.0-beta.25
+// @version     1.0.0-beta.26
 // @downloadURL https://github.com/geotrev/dark-hole/raw/main/dist/twitter-bookmarks-dev.user.js
 // @updateURL   https://github.com/geotrev/dark-hole/raw/main/dist/twitter-bookmarks-dev.user.js
 // @grant       none
@@ -119,7 +119,7 @@
   const pageArgs = new Map();
   let sessionIsInitialized = false;
 
-  async function beginScript({ handler, message, actionLabel }) {
+  function beginScript({ handler, message, actionLabel }) {
     notify.render({
       message,
       actions: [{ label: actionLabel, handler }],
@@ -131,7 +131,7 @@
    * Create event to watch for page navigation, clear existing operations,
    * then re-initialize the script on the subsequent page.
    */
-  async function watchNavigation() {
+  function watchNavigation() {
     if (sessionIsInitialized) return
 
     // START monkey patch history state
@@ -249,6 +249,7 @@
   }
   (function () {
     initialize({
+      pathname: window?.location?.pathname,
       title: "Twitter Bookmarks",
       handler,
       urlPaths: ["/i/bookmarks"],

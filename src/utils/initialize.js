@@ -3,7 +3,7 @@ import { notify } from "./notify"
 const pageArgs = new Map()
 let sessionIsInitialized = false
 
-async function beginScript({ handler, message, actionLabel }) {
+function beginScript({ handler, message, actionLabel }) {
   notify.render({
     message,
     actions: [{ label: actionLabel, handler }],
@@ -15,7 +15,7 @@ async function beginScript({ handler, message, actionLabel }) {
  * Create event to watch for page navigation, clear existing operations,
  * then re-initialize the script on the subsequent page.
  */
-async function watchNavigation() {
+function watchNavigation() {
   if (sessionIsInitialized) return
 
   // START monkey patch history state

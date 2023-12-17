@@ -61,6 +61,7 @@ async function handler(_cells = []) {
 
 ;(function () {
   initialize({
+    pathname: window?.location?.pathname,
     title: "Twitter Bookmarks",
     handler,
     urlPaths: ["/i/bookmarks"],

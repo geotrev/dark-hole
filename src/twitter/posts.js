@@ -118,6 +118,7 @@ async function handler(_cells = []) {
   if (!twitterHandle) return
 
   initialize({
+    pathname: window?.location?.pathname,
     title: "Twitter Posts",
     handler,
     urlPaths: [

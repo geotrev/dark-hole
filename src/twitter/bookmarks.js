@@ -59,7 +59,7 @@ async function handler(_cells = []) {
   }
 }
 
-window?.addEventListener("DOMContentLoaded", async () => {
+;(function () {
   initialize({
     title: "Twitter Bookmarks",
     message:
@@ -67,4 +67,4 @@ window?.addEventListener("DOMContentLoaded", async () => {
     handler,
     urlPaths: ["/i/bookmarks"],
   })
-})
+})()

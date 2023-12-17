@@ -5,7 +5,7 @@
 // @author      George Treviranus
 // @run-at      document-idle
 // @match       https://twitter.com/i/bookmarks
-// @version     1.0.0-beta.23
+// @version     1.0.0-beta.24
 // @downloadURL https://github.com/geotrev/dark-hole/raw/main/dist/twitter-bookmarks-dev.user.js
 // @updateURL   https://github.com/geotrev/dark-hole/raw/main/dist/twitter-bookmarks-dev.user.js
 // @grant       none
@@ -247,8 +247,7 @@
       console.log("✨ Done!");
     }
   }
-
-  window?.addEventListener("DOMContentLoaded", async () => {
+  (function () {
     initialize({
       title: "Twitter Bookmarks",
       message:
@@ -256,6 +255,6 @@
       handler,
       urlPaths: ["/i/bookmarks"],
     });
-  });
+  })();
 
 })();

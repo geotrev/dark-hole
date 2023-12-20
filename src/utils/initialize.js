@@ -13,9 +13,7 @@ export async function initialize({
 }) {
   if (!urlPaths.some((v) => pathname === v)) return
 
-  // Kick off the script, remove any preexisting notifications if they exist
-
-  notify.dismissAll()
+  // Kick off the script
 
   notify.render({
     title,

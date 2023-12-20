@@ -5,7 +5,7 @@
 // @author      George Treviranus
 // @run-at      document-idle
 // @match       https://twitter.com/*
-// @version     1.0.0-beta.33
+// @version     1.0.0-beta.34
 // @downloadURL https://github.com/geotrev/dark-hole/raw/main/dist/twitter-posts-dev.user.js
 // @updateURL   https://github.com/geotrev/dark-hole/raw/main/dist/twitter-posts-dev.user.js
 // @grant       none
@@ -270,9 +270,7 @@
   }) {
     if (!urlPaths.some((v) => pathname === v)) return
 
-    // Kick off the script, remove any preexisting notifications if they exist
-
-    notify.dismissAll();
+    // Kick off the script
 
     notify.render({
       title,

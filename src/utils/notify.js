@@ -1,3 +1,39 @@
+/**
+ * Reset & assign custom styles to notification button
+ */
+const setActionStyles = (actionEl) => {
+  // Reset styles
+  ;[
+    ["display", "inline-block"],
+    ["border", "none"],
+    ["margin", "0"],
+    ["textDecoration", "none"],
+    ["fontFamily", "inherit"],
+    ["fontSize", "inherit"],
+    ["lineHeight", "1"],
+    ["cursor", "pointer"],
+    ["textAlign", "center"],
+  ].forEach(([prop, value]) => {
+    actionEl.style[prop] = value
+  })
+
+  // Set custom styles
+  ;[
+    ["transition", "background 0.2s ease-in-out"],
+    ["marginInlineEnd", "8px"],
+    ["backgroundColor", "white"],
+    ["color", "#222"],
+    ["appearance", "none"],
+    ["borderRadius", "2px"],
+    ["padding", "6px 10px"],
+  ].forEach(([prop, value]) => {
+    actionEl.style[prop] = value
+  })
+}
+
+/**
+ * Global notification utility to display messages to the user.
+ */
 class Notify {
   /**
    * The current notifications queue. it is incremented and
@@ -127,8 +163,9 @@ class Notify {
       for (const action of actions) {
         const actionEl = document.createElement("button")
 
+        setActionStyles(actionEl)
+
         actionEl.dataset.dhNotifyAction = true
-        actionEl.style.marginInlineEnd = "8px"
         actionEl.innerText = action.label
 
         actionEl.addEventListener("click", () => {

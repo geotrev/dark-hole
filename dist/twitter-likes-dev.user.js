@@ -5,7 +5,7 @@
 // @author      George Treviranus
 // @run-at      document-idle
 // @match       https://twitter.com/*/likes
-// @version     1.0.0-beta.32
+// @version     1.0.0-beta.33
 // @downloadURL https://github.com/geotrev/dark-hole/raw/main/dist/twitter-likes-dev.user.js
 // @updateURL   https://github.com/geotrev/dark-hole/raw/main/dist/twitter-likes-dev.user.js
 // @grant       none
@@ -27,6 +27,41 @@
     )
   }
 
+  /**
+   * Reset & assign custom styles to notification button
+   */
+  const setActionStyles = (actionEl) => {
+  [
+      ["display", "inline-block"],
+      ["border", "none"],
+      ["margin", "0"],
+      ["textDecoration", "none"],
+      ["fontFamily", "inherit"],
+      ["fontSize", "inherit"],
+      ["lineHeight", "1"],
+      ["cursor", "pointer"],
+      ["textAlign", "center"],
+    ].forEach(([prop, value]) => {
+      actionEl.style[prop] = value;
+    })
+
+    // Set custom styles
+    ;[
+      ["transition", "background 0.2s ease-in-out"],
+      ["marginInlineEnd", "8px"],
+      ["backgroundColor", "white"],
+      ["color", "#222"],
+      ["appearance", "none"],
+      ["borderRadius", "2px"],
+      ["padding", "6px 10px"],
+    ].forEach(([prop, value]) => {
+      actionEl.style[prop] = value;
+    });
+  };
+
+  /**
+   * Global notification utility to display messages to the user.
+   */
   class Notify {
     /**
      * The current notifications queue. it is incremented and
@@ -156,8 +191,9 @@
         for (const action of actions) {
           const actionEl = document.createElement("button");
 
+          setActionStyles(actionEl);
+
           actionEl.dataset.dhNotifyAction = true;
-          actionEl.style.marginInlineEnd = "8px";
           actionEl.innerText = action.label;
 
           actionEl.addEventListener("click", () => {

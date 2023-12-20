@@ -4,16 +4,12 @@ import {
   setActionStyles,
 } from "./notify-dom.js"
 
+let idCounter = 0
+
 /**
  * Global notification utility to display messages to the user.
  */
 class Notify {
-  /**
-   * The current notifications queue. it is incremented and
-   * decremented as notifications are added and removed.
-   */
-  static queue = 0
-
   /**
    * The default delay for notifications to be dismissed.
    */
@@ -23,32 +19,41 @@ class Notify {
     this.notifyWrapper = buildNotifyContainer()
     this.notifyEl = buildNotification()
 
+    /**
+     * The current notifications queue. it is incremented and
+     * decremented as notifications are added and removed.
+     */
+    this.queue = []
+
     document.body.appendChild(this.notifyWrapper)
     document.addEventListener("keydown", this.handleKeyDown, true)
   }
 
   queueIsEmpty = () => {
-    return this.queue <= 0
+    return this.queue.length === 0
   }
 
   handleKeyDown = (e) => {
     if (this.queueIsEmpty() || e.key !== "Escape") return
 
     e.preventDefault()
-    this.dismiss()
+    this.dismiss(this.queue[0])
   }
 
-  dismiss = () => {
+  dismiss = (targetId) => {
     if (this.queueIsEmpty()) return
 
-    this.notifyWrapper.removeChild(this.notifyWrapper.firstElementChild)
-    this.queue -= 1
+    this.notifyWrapper.removeChild(
+      this.notifyWrapper.querySelector(`[data-dh-notify="${targetId}"]`)
+    )
+    this.queue.splice(
+      this.queue.findIndex((id) => id === targetId),
+      1
+    )
   }
 
   dismissAll = () => {
-    while (!this.queueIsEmpty()) {
-      this.dismiss()
-    }
+    this.queue.forEach((id) => this.dismiss(id))
   }
 
   render = ({
@@ -57,7 +62,10 @@ class Notify {
     delay = this.DEFAULT_DELAY,
     actions = [],
   }) => {
+    const notifyId = idCounter++
     const notification = this.notifyEl.cloneNode(true)
+
+    notification.dataset.dhNotify = notifyId
 
     const titleEl = notification.querySelector("[data-dh-notify-heading]")
     titleEl.innerText = `[Dark Hole] ${title}`
@@ -83,7 +91,7 @@ class Notify {
 
         actionEl.addEventListener("click", () => {
           action.handler?.()
-          this.dismiss()
+          this.dismiss(notifyId)
         })
 
         notification.appendChild(actionEl)
@@ -91,8 +99,10 @@ class Notify {
     }
 
     this.notifyWrapper.appendChild(notification)
-    this.queue += 1
-    setTimeout(this.dismiss, delay)
+    this.queue.push(notifyId)
+    setTimeout(() => this.dismiss(notifyId), delay)
+
+    return notifyId
   }
 }
 

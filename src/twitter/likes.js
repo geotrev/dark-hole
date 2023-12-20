@@ -37,6 +37,7 @@ async function handler(_cells = []) {
   notify.render({
     message: "🧹 Removing likes",
     delay: 3000,
+    actions: [{ label: "OK" }],
   })
 
   for (const cell of cells) {
@@ -85,6 +86,7 @@ async function handler(_cells = []) {
     notify.render({
       message: "✨ Done!",
       delay: 5000,
+      actions: [{ label: "OK" }],
     })
   }
 }

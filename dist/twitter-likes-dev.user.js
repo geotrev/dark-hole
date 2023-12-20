@@ -5,13 +5,73 @@
 // @author      George Treviranus
 // @run-at      document-idle
 // @match       https://twitter.com/*/likes
-// @version     1.0.0-beta.35
+// @version     1.0.0-beta.36
 // @downloadURL https://github.com/geotrev/dark-hole/raw/main/dist/twitter-likes-dev.user.js
 // @updateURL   https://github.com/geotrev/dark-hole/raw/main/dist/twitter-likes-dev.user.js
 // @grant       none
 // ==/UserScript==
 (function () {
   'use strict';
+
+  const buildNotification = () => {
+    const notification = document.createElement("section");
+
+    notification.style.pointerEvents = "auto";
+    notification.style.flexWrap = "wrap";
+    notification.style.backgroundColor = "#333";
+    notification.style.margin = "0px";
+    notification.style.color = "#dedede";
+    notification.style.padding = "20px";
+    notification.style.borderRadius = "8px";
+    notification.style.maxWidth = "280px";
+    notification.style.boxShadow = "0 5px 10px rgba(0,0,0,0.5)";
+    notification.style.marginBottom = "12px";
+
+    const title = document.createElement("h3");
+
+    title.style.marginBottom = "8px";
+    title.style.marginTop = "0";
+    title.style.padding = "0";
+    title.style.fontWeight = "bold";
+    title.style.fontSize = "12px";
+
+    const message = document.createElement("p");
+
+    message.style.fontSize = "16px";
+    message.style.lineHeight = "22px";
+    message.style.padding = "0";
+    message.style.margin = "0 0 12px 0";
+
+    notification.dataset.dhNotify = true;
+    title.dataset.dhNotifyHeading = true;
+    message.dataset.dhNotifyMessage = true;
+
+    notification.appendChild(title);
+    notification.appendChild(message);
+
+    return notification
+  };
+
+  const buildNotifyContainer = () => {
+    const container = document.createElement("div");
+
+    container.style.fontFamily =
+      "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif";
+    container.style.position = "fixed";
+    container.style.top = "0px";
+    container.style.right = "0px";
+    container.style.bottom = "unset";
+    container.style.left = "0px";
+    container.style.zIndex = "4000";
+    container.style.padding = "32px";
+    container.style.pointerEvents = "none";
+    container.style.display = "flex";
+    container.style.flexDirection = "column";
+    container.style.alignItems = "flex-end";
+    container.dataset.dhNotifyContainer = true;
+
+    return container
+  };
 
   /**
    * Reset & assign custom styles to notification button
@@ -61,11 +121,15 @@
     static DEFAULT_DELAY = 2000
 
     constructor() {
-      this.notifyWrapper = this.buildNotifyContainer();
-      this.notifyEl = this.buildNotification();
+      this.notifyWrapper = buildNotifyContainer();
+      this.notifyEl = buildNotification();
 
       document.body.appendChild(this.notifyWrapper);
       document.addEventListener("keydown", this.handleKeyDown, true);
+    }
+
+    queueIsEmpty = () => {
+      return this.queue <= 0
     }
 
     handleKeyDown = (e) => {
@@ -73,70 +137,6 @@
 
       e.preventDefault();
       this.dismiss();
-    }
-
-    queueIsEmpty = () => {
-      return this.queue <= 0
-    }
-
-    buildNotifyContainer = () => {
-      const container = document.createElement("div");
-
-      container.style.fontFamily =
-        "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif";
-      container.style.position = "fixed";
-      container.style.top = "0px";
-      container.style.right = "0px";
-      container.style.bottom = "unset";
-      container.style.left = "0px";
-      container.style.zIndex = "4000";
-      container.style.padding = "32px";
-      container.style.pointerEvents = "none";
-      container.style.display = "flex";
-      container.style.flexDirection = "column";
-      container.style.alignItems = "flex-end";
-      container.dataset.dhNotifyContainer = true;
-
-      return container
-    }
-
-    buildNotification = () => {
-      const notification = document.createElement("section");
-
-      notification.style.pointerEvents = "auto";
-      notification.style.flexWrap = "wrap";
-      notification.style.backgroundColor = "#333";
-      notification.style.margin = "0px";
-      notification.style.color = "#dedede";
-      notification.style.padding = "20px";
-      notification.style.borderRadius = "8px";
-      notification.style.maxWidth = "280px";
-      notification.style.boxShadow = "0 5px 10px rgba(0,0,0,0.5)";
-      notification.style.marginBottom = "12px";
-
-      const title = document.createElement("h3");
-
-      title.style.marginBottom = "8px";
-      title.style.marginTop = "0";
-      title.style.padding = "0";
-      title.style.fontWeight = "bold";
-      title.style.fontSize = "12px";
-
-      const message = document.createElement("p");
-
-      message.style.fontSize = "16px";
-      message.style.lineHeight = "22px";
-      message.style.padding = "0";
-      message.style.margin = "0 0 12px 0";
-
-      notification.dataset.dhNotify = true;
-      title.dataset.dhNotifyHeading = true;
-      message.dataset.dhNotifyMessage = true;
-
-      notification.appendChild(title);
-      notification.appendChild(message);
-
-      return notification
     }
 
     dismiss = () => {
@@ -183,7 +183,7 @@
           actionEl.innerText = action.label;
 
           actionEl.addEventListener("click", () => {
-            action.handler();
+            action?.handler();
             this.dismiss();
           });
 
@@ -313,6 +313,7 @@
     notify.render({
       message: "🧹 Removing likes",
       delay: 3000,
+      actions: [{ label: "OK" }],
     });
 
     for (const cell of cells) {
@@ -361,6 +362,7 @@
       notify.render({
         message: "✨ Done!",
         delay: 5000,
+        actions: [{ label: "OK" }],
       });
     }
   }

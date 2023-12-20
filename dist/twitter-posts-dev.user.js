@@ -5,27 +5,13 @@
 // @author      George Treviranus
 // @run-at      document-idle
 // @match       https://twitter.com/*
-// @version     1.0.0-beta.34
+// @version     1.0.0-beta.35
 // @downloadURL https://github.com/geotrev/dark-hole/raw/main/dist/twitter-posts-dev.user.js
 // @updateURL   https://github.com/geotrev/dark-hole/raw/main/dist/twitter-posts-dev.user.js
 // @grant       none
 // ==/UserScript==
 (function () {
   'use strict';
-
-  /**
-   * Returns the Twitter handle if it exists on the page, or null.
-   *
-   * @returns string
-   */
-  function getTwitterHandle() {
-    return (
-      document
-        .querySelector('[data-testid="UserName"]')
-        ?.innerText.split("\n")?.[1]
-        ?.slice(1) || null
-    )
-  }
 
   /**
    * Reset & assign custom styles to notification button
@@ -214,6 +200,20 @@
   const notify = new Notify();
 
   /**
+   * Returns the Twitter handle if it exists on the page, or null.
+   *
+   * @returns string
+   */
+  function getTwitterHandle() {
+    return (
+      document
+        .querySelector('[data-testid="UserName"]')
+        ?.innerText.split("\n")?.[1]
+        ?.slice(1) || null
+    )
+  }
+
+  /**
    * Given a DOM state, repeatedly call the given callback until it returns truthy.
    * Show a message if unable to resolve.
    *
@@ -318,7 +318,11 @@
     }
 
     let cells = _cells.length ? _cells : queryCells();
-    console.log("🧹 Deleting tweets");
+
+    notify.render({
+      message: "🧹 Removing tweets",
+      delay: 3000,
+    });
 
     for (const cell of cells) {
       if (SHOULD_STOP) {
@@ -381,10 +385,25 @@
     cells = queryCells();
 
     if (cells.length) {
-      console.log("🧲 There are more tweets to delete");
+      notify.render({
+        message: "🧲 There are more Posts to remove, hold on...",
+        delay: 2000,
+        actions: [
+          {
+            label: "Stop now",
+            handler: () => {
+              SHOULD_STOP = true;
+            },
+          },
+        ],
+      });
+
       await handler(cells);
     } else {
-      console.log("✨ Done!");
+      notify.render({
+        message: "✨ Done!",
+        delay: 5000,
+      });
     }
   }
   (async function () {

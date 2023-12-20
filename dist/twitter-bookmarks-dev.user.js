@@ -5,7 +5,7 @@
 // @author      George Treviranus
 // @run-at      document-idle
 // @match       https://twitter.com/i/bookmarks
-// @version     1.0.0-beta.34
+// @version     1.0.0-beta.35
 // @downloadURL https://github.com/geotrev/dark-hole/raw/main/dist/twitter-bookmarks-dev.user.js
 // @updateURL   https://github.com/geotrev/dark-hole/raw/main/dist/twitter-bookmarks-dev.user.js
 // @grant       none
@@ -258,7 +258,11 @@
     }
 
     let cells = _cells.length ? _cells : queryCells();
-    console.log("🧹 Deleting bookmarks");
+
+    notify.render({
+      message: "🧹 Removing bookmarks",
+      delay: 3000,
+    });
 
     for (const cell of cells) {
       if (SHOULD_STOP) {
@@ -280,10 +284,25 @@
     INTERACTION_DELAY = undefined;
 
     if (cells.length) {
-      console.log("🧲 There are more tweets to delete");
+      notify.render({
+        message: "🧲 There are more Bookmarks to remove, hold on...",
+        delay: 2000,
+        actions: [
+          {
+            label: "Stop now",
+            handler: () => {
+              SHOULD_STOP = true;
+            },
+          },
+        ],
+      });
+
       return handler(cells)
     } else {
-      console.log("✨ Done!");
+      notify.render({
+        message: "✨ Done!",
+        delay: 5000,
+      });
     }
   }
   (function () {

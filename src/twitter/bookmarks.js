@@ -1,3 +1,4 @@
+import { notify } from "../utils/notify.js"
 import { stopScript } from "../utils/stop-script.js"
 import { initialize } from "../utils/initialize.js"
 
@@ -30,7 +31,11 @@ async function handler(_cells = []) {
   }
 
   let cells = _cells.length ? _cells : queryCells()
-  console.log("🧹 Deleting bookmarks")
+
+  notify.render({
+    message: "🧹 Removing bookmarks",
+    delay: 3000,
+  })
 
   for (const cell of cells) {
     if (SHOULD_STOP) {
@@ -52,10 +57,25 @@ async function handler(_cells = []) {
   INTERACTION_DELAY = undefined
 
   if (cells.length) {
-    console.log("🧲 There are more tweets to delete")
+    notify.render({
+      message: "🧲 There are more Bookmarks to remove, hold on...",
+      delay: 2000,
+      actions: [
+        {
+          label: "Stop now",
+          handler: () => {
+            SHOULD_STOP = true
+          },
+        },
+      ],
+    })
+
     return handler(cells)
   } else {
-    console.log("✨ Done!")
+    notify.render({
+      message: "✨ Done!",
+      delay: 5000,
+    })
   }
 }
 

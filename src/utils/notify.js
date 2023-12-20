@@ -82,7 +82,7 @@ class Notify {
         actionEl.innerText = action.label
 
         actionEl.addEventListener("click", () => {
-          action?.handler()
+          action.handler?.()
           this.dismiss()
         })
 

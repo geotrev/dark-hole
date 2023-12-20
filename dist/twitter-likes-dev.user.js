@@ -5,7 +5,7 @@
 // @author      George Treviranus
 // @run-at      document-idle
 // @match       https://twitter.com/*/likes
-// @version     1.0.0-beta.36
+// @version     1.0.0-beta.37
 // @downloadURL https://github.com/geotrev/dark-hole/raw/main/dist/twitter-likes-dev.user.js
 // @updateURL   https://github.com/geotrev/dark-hole/raw/main/dist/twitter-likes-dev.user.js
 // @grant       none
@@ -183,7 +183,7 @@
           actionEl.innerText = action.label;
 
           actionEl.addEventListener("click", () => {
-            action?.handler();
+            action.handler?.();
             this.dismiss();
           });
 

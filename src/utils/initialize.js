@@ -1,7 +1,9 @@
 import { notify } from "./notify"
+import { snooze } from "./snooze"
 
 const pageArgs = new Map()
 let sessionIsInitialized = false
+let pageUrl = window?.location?.href
 
 function beginScript({ handler, title, message, actionLabel }) {
   notify.render({
@@ -29,15 +31,26 @@ function watchNavigation() {
 
   // END monkey patch history state
 
-  window?.addEventListener("popstate", () => {
-    notify.dismissAll()
+  document?.addEventListener(
+    "click",
+    async () => {
+      const nextPageUrl = window?.location?.href
 
-    const pathname = window?.location?.pathname
+      await snooze()
 
-    if (pageArgs.has(pathname)) {
-      initialize({ ...pageArgs.get(pathname) })
-    }
-  })
+      if (pageUrl !== nextPageUrl) {
+        pageUrl = nextPageUrl
+        notify.dismissAll()
+
+        const pathname = window?.location?.pathname
+
+        if (pageArgs.has(pathname)) {
+          initialize({ ...pageArgs.get(pathname) })
+        }
+      }
+    },
+    true
+  )
 }
 
 /**

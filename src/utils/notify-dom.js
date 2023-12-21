@@ -9,6 +9,7 @@ export const buildNotification = () => {
   notification.style.padding = "20px"
   notification.style.borderRadius = "8px"
   notification.style.maxWidth = "280px"
+  notification.style.minWidth = "200px"
   notification.style.boxShadow = "0 5px 10px rgba(0,0,0,0.5)"
   notification.style.marginBottom = "12px"
 

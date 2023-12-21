@@ -10,14 +10,14 @@ let idCounter = 0
  * Global notification utility to display messages to the user.
  */
 class Notify {
-  /**
-   * The default timer for notifications to be dismissed.
-   */
-  static DEFAULT_TIMER = 3000
-
   constructor() {
     this.notifyWrapper = buildNotifyContainer()
     this.notifyEl = buildNotification()
+
+    /**
+     * The default timer for notifications to be dismissed.
+     */
+    this.DEFAULT_TIMER = 3000
 
     /**
      * The current notifications queue. it is incremented and

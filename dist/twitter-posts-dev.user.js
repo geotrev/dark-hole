@@ -5,7 +5,7 @@
 // @author      George Treviranus
 // @run-at      document-idle
 // @match       https://twitter.com/*
-// @version     1.0.0-beta.43
+// @version     1.0.0-beta.44
 // @downloadURL https://github.com/geotrev/dark-hole/raw/main/dist/twitter-posts-dev.user.js
 // @updateURL   https://github.com/geotrev/dark-hole/raw/main/dist/twitter-posts-dev.user.js
 // @grant       none
@@ -111,14 +111,14 @@
    * Global notification utility to display messages to the user.
    */
   class Notify {
-    /**
-     * The default timer for notifications to be dismissed.
-     */
-    static DEFAULT_TIMER = 3000
-
     constructor() {
       this.notifyWrapper = buildNotifyContainer();
       this.notifyEl = buildNotification();
+
+      /**
+       * The default timer for notifications to be dismissed.
+       */
+      this.DEFAULT_TIMER = 3000;
 
       /**
        * The current notifications queue. it is incremented and

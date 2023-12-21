@@ -4,6 +4,7 @@ import fs from "fs"
 import path from "path"
 import semver from "semver"
 import yargs from "yargs"
+import { execa } from "execa"
 import versions from "../meta-versions.json" assert { type: "json" }
 
 const args = yargs(process.argv.slice(2))
@@ -22,7 +23,7 @@ const args = yargs(process.argv.slice(2))
   .demandOption("increment")
   .parse()
 
-;(function run() {
+async function run() {
   const { prerelease, increment } = args
   let newVersions = { ...versions }
 
@@ -66,4 +67,8 @@ const args = yargs(process.argv.slice(2))
     JSON.stringify(newVersions, null, 2),
     "utf8"
   )
-})()
+
+  await execa("git", ["add", "meta-versions.json"])
+}
+
+run()

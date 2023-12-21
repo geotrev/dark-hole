@@ -5,7 +5,7 @@
 // @author      George Treviranus
 // @run-at      document-idle
 // @match       https://twitter.com/i/bookmarks
-// @version     1.0.0-beta.46
+// @version     1.0.0-beta.47
 // @downloadURL https://github.com/geotrev/dark-hole/raw/main/dist/twitter-bookmarks-dev.user.js
 // @updateURL   https://github.com/geotrev/dark-hole/raw/main/dist/twitter-bookmarks-dev.user.js
 // @grant       none

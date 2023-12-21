@@ -43,9 +43,9 @@ async function handler(_cells = []) {
 
   let cells = _cells.length ? _cells : queryCells()
 
-  for (const cell of cells) {
-    notify.render({ message: "🧹 Removing tweets" })
+  notify.render({ message: "🧹 Removing tweets" })
 
+  for (const cell of cells) {
     if (SHOULD_STOP) {
       stopScript("Twitter Posts")
       document.removeEventListener("keydown", escapeHandler, true)

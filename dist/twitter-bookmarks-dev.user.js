@@ -5,7 +5,7 @@
 // @author      George Treviranus
 // @run-at      document-idle
 // @match       https://twitter.com/i/bookmarks
-// @version     1.0.0-beta.47
+// @version     1.0.0-beta.48
 // @downloadURL https://github.com/geotrev/dark-hole/raw/main/dist/twitter-bookmarks-dev.user.js
 // @updateURL   https://github.com/geotrev/dark-hole/raw/main/dist/twitter-bookmarks-dev.user.js
 // @grant       none
@@ -292,9 +292,9 @@
 
     let cells = _cells.length ? _cells : queryCells();
 
-    for (const cell of cells) {
-      notify.render({ message: "🧹 Removing bookmarks" });
+    notify.render({ message: "🧹 Removing bookmarks" });
 
+    for (const cell of cells) {
       if (SHOULD_STOP) {
         stopScript("Twitter Bookmarks");
         document.removeEventListener("keydown", cancelOnEscape, true);

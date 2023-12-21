@@ -5,7 +5,7 @@
 // @author      George Treviranus
 // @run-at      document-idle
 // @match       https://twitter.com/*
-// @version     1.0.0-beta.47
+// @version     1.0.0-beta.48
 // @downloadURL https://github.com/geotrev/dark-hole/raw/main/dist/twitter-posts-dev.user.js
 // @updateURL   https://github.com/geotrev/dark-hole/raw/main/dist/twitter-posts-dev.user.js
 // @grant       none
@@ -352,9 +352,9 @@
 
     let cells = _cells.length ? _cells : queryCells();
 
-    for (const cell of cells) {
-      notify.render({ message: "🧹 Removing tweets" });
+    notify.render({ message: "🧹 Removing tweets" });
 
+    for (const cell of cells) {
       if (SHOULD_STOP) {
         stopScript("Twitter Posts");
         document.removeEventListener("keydown", escapeHandler, true);

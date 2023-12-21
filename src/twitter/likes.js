@@ -34,11 +34,7 @@ async function handler(_cells = []) {
 
   let cells = _cells.length ? _cells : queryCells()
 
-  notify.render({
-    message: "🧹 Removing likes",
-    delay: 3000,
-    actions: [{ label: "OK" }],
-  })
+  notify.render({ message: "🧹 Removing likes" })
 
   for (const cell of cells) {
     if (SHOULD_STOP) {
@@ -70,7 +66,6 @@ async function handler(_cells = []) {
   if (cells.length) {
     notify.render({
       message: "🧲 There are more Likes to remove, hold on...",
-      delay: 2000,
       actions: [
         {
           label: "Stop now",
@@ -83,11 +78,7 @@ async function handler(_cells = []) {
 
     return handler(cells)
   } else {
-    notify.render({
-      message: "✨ Done!",
-      delay: 5000,
-      actions: [{ label: "OK" }],
-    })
+    notify.render({ message: "✨ Done!" })
   }
 }
 

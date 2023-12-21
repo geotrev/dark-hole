@@ -43,11 +43,7 @@ async function handler(_cells = []) {
 
   let cells = _cells.length ? _cells : queryCells()
 
-  notify.render({
-    message: "🧹 Removing tweets",
-    delay: 3000,
-    actions: [{ label: "OK" }],
-  })
+  notify.render({ message: "🧹 Removing tweets" })
 
   for (const cell of cells) {
     if (SHOULD_STOP) {
@@ -112,7 +108,6 @@ async function handler(_cells = []) {
   if (cells.length) {
     notify.render({
       message: "🧲 There are more Posts to remove, hold on...",
-      delay: 2000,
       actions: [
         {
           label: "Stop now",
@@ -125,11 +120,7 @@ async function handler(_cells = []) {
 
     await handler(cells)
   } else {
-    notify.render({
-      message: "✨ Done!",
-      delay: 5000,
-      actions: [{ label: "OK" }],
-    })
+    notify.render({ message: "✨ Done!" })
   }
 }
 

@@ -11,9 +11,9 @@ let idCounter = 0
  */
 class Notify {
   /**
-   * The default delay for notifications to be dismissed.
+   * The default timer for notifications to be dismissed.
    */
-  static DEFAULT_DELAY = 2000
+  static DEFAULT_TIMER = 3000
 
   constructor() {
     this.notifyWrapper = buildNotifyContainer()
@@ -59,8 +59,8 @@ class Notify {
   render = ({
     title = "",
     message,
-    delay = this.DEFAULT_DELAY,
-    actions = [],
+    timer = this.DEFAULT_TIMER,
+    actions = [{ label: "OK" }],
   }) => {
     const notifyId = idCounter++
     const notification = this.notifyEl.cloneNode(true)
@@ -73,7 +73,7 @@ class Notify {
     // Assign message to content node
     if (message) {
       const notifyContentEl = notification.querySelector(
-        "[data-dh-notify-message"
+        "[data-dh-notify-message]"
       )
 
       notifyContentEl.innerText = message
@@ -89,8 +89,8 @@ class Notify {
         actionEl.dataset.dhNotifyAction = true
         actionEl.innerText = action.label
 
-        actionEl.addEventListener("click", () => {
-          action.handler?.()
+        actionEl.addEventListener("click", (e) => {
+          action.handler?.(e)
           this.dismiss(notifyId)
         })
 
@@ -100,7 +100,7 @@ class Notify {
 
     this.notifyWrapper.appendChild(notification)
     this.queue.push(notifyId)
-    setTimeout(() => this.dismiss(notifyId), delay)
+    setTimeout(() => this.dismiss(notifyId), timer)
 
     return notifyId
   }

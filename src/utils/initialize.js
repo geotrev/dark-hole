@@ -1,5 +1,25 @@
 import { notify } from "./notify"
 
+const pageUrl = window?.location?.href
+
+function snooze() {
+  return new Promise((resolve) => setTimeout(resolve, 200))
+}
+
+async function handleNavigate() {
+  await snooze()
+
+  if (pageUrl !== window?.location?.href) {
+    notify.dismissAll()
+
+    document.removeEventListener("click", handleNavigate, true)
+  }
+}
+
+function watchNavigation() {
+  document.addEventListener("click", handleNavigate, true)
+}
+
 /**
  * This function will initialize the script on a fresh page load.
  */
@@ -19,6 +39,8 @@ export async function initialize({
     title,
     message,
     actions: [{ label: actionLabel, handler }],
-    delay: 60000,
+    timer: 60000,
   })
+
+  watchNavigation()
 }

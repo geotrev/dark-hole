@@ -5,7 +5,7 @@
 // @author      George Treviranus
 // @run-at      document-idle
 // @match       https://twitter.com/*/likes
-// @version     1.0.0-beta.39
+// @version     1.0.0-beta.43
 // @downloadURL https://github.com/geotrev/dark-hole/raw/main/dist/twitter-likes-dev.user.js
 // @updateURL   https://github.com/geotrev/dark-hole/raw/main/dist/twitter-likes-dev.user.js
 // @grant       none
@@ -112,9 +112,9 @@
    */
   class Notify {
     /**
-     * The default delay for notifications to be dismissed.
+     * The default timer for notifications to be dismissed.
      */
-    static DEFAULT_DELAY = 2000
+    static DEFAULT_TIMER = 3000
 
     constructor() {
       this.notifyWrapper = buildNotifyContainer();
@@ -160,8 +160,8 @@
     render = ({
       title = "",
       message,
-      delay = this.DEFAULT_DELAY,
-      actions = [],
+      timer = this.DEFAULT_TIMER,
+      actions = [{ label: "OK" }],
     }) => {
       const notifyId = idCounter++;
       const notification = this.notifyEl.cloneNode(true);
@@ -174,7 +174,7 @@
       // Assign message to content node
       if (message) {
         const notifyContentEl = notification.querySelector(
-          "[data-dh-notify-message"
+          "[data-dh-notify-message]"
         );
 
         notifyContentEl.innerText = message;
@@ -190,8 +190,8 @@
           actionEl.dataset.dhNotifyAction = true;
           actionEl.innerText = action.label;
 
-          actionEl.addEventListener("click", () => {
-            action.handler?.();
+          actionEl.addEventListener("click", (e) => {
+            action.handler?.(e);
             this.dismiss(notifyId);
           });
 
@@ -201,7 +201,7 @@
 
       this.notifyWrapper.appendChild(notification);
       this.queue.push(notifyId);
-      setTimeout(() => this.dismiss(notifyId), delay);
+      setTimeout(() => this.dismiss(notifyId), timer);
 
       return notifyId
     }
@@ -267,6 +267,26 @@
     notify({ content });
   }
 
+  const pageUrl = window?.location?.href;
+
+  function snooze() {
+    return new Promise((resolve) => setTimeout(resolve, 200))
+  }
+
+  async function handleNavigate() {
+    await snooze();
+
+    if (pageUrl !== window?.location?.href) {
+      notify.dismissAll();
+
+      document.removeEventListener("click", handleNavigate, true);
+    }
+  }
+
+  function watchNavigation() {
+    document.addEventListener("click", handleNavigate, true);
+  }
+
   /**
    * This function will initialize the script on a fresh page load.
    */
@@ -286,8 +306,10 @@
       title,
       message,
       actions: [{ label: actionLabel, handler }],
-      delay: 60000,
+      timer: 60000,
     });
+
+    watchNavigation();
   }
 
   let SHOULD_STOP = false;
@@ -320,11 +342,7 @@
 
     let cells = _cells.length ? _cells : queryCells();
 
-    notify.render({
-      message: "🧹 Removing likes",
-      delay: 3000,
-      actions: [{ label: "OK" }],
-    });
+    notify.render({ message: "🧹 Removing likes" });
 
     for (const cell of cells) {
       if (SHOULD_STOP) {
@@ -356,7 +374,6 @@
     if (cells.length) {
       notify.render({
         message: "🧲 There are more Likes to remove, hold on...",
-        delay: 2000,
         actions: [
           {
             label: "Stop now",
@@ -369,11 +386,7 @@
 
       return handler(cells)
     } else {
-      notify.render({
-        message: "✨ Done!",
-        delay: 5000,
-        actions: [{ label: "OK" }],
-      });
+      notify.render({ message: "✨ Done!" });
     }
   }
   (async function () {

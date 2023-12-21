@@ -32,9 +32,9 @@ async function handler(_cells = []) {
 
   let cells = _cells.length ? _cells : queryCells()
 
-  notify.render({ message: "🧹 Removing bookmarks" })
-
   for (const cell of cells) {
+    notify.render({ message: "🧹 Removing bookmarks" })
+
     if (SHOULD_STOP) {
       stopScript("Twitter Bookmarks")
       document.removeEventListener("keydown", cancelOnEscape, true)
